@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- * \file
- *    rd_intra_jm.h
- *
- * \author
- *    Alexis Michael Tourapis
- *
- * \date
- *    2 January 2008
- *
- * \brief
- *    Headerfile for JM rd based intra mode decision
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    rd_intra_jm.h
+*
+* \author
+*    Alexis Michael Tourapis
+*
+* \date
+*    2 January 2008
+*
+* \brief
+*    Headerfile for JM rd based intra mode decision
+**************************************************************************
+*/
 
 #ifndef _RD_INTRA_JM_H_
 #define _RD_INTRA_JM_H_

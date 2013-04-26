@@ -1,16 +1,16 @@
 
 /*!
- ************************************************************************
- * \file conformance.h
- *
- * \brief
- *   Level & Profile Related definitions  
- *
- * \author
- *    Alexis Michael Tourapis         <alexismt@ieee.org>       \n
- *
- ************************************************************************
- */
+************************************************************************
+* \file conformance.h
+*
+* \brief
+*   Level & Profile Related definitions  
+*
+* \author
+*    Alexis Michael Tourapis         <alexismt@ieee.org>       \n
+*
+************************************************************************
+*/
 
 #ifndef _CONFORMANCE_H_
 #define _CONFORMANCE_H_

@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- * \file
- *    md_distortion.h
- *
- * \author
- *    Alexis Michael Tourapis        <alexis.tourapis@dolby.com>
- *
- * \date
- *    7. February 2009
- *
- * \brief
- *    Headerfile for distortion functions
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    md_distortion.h
+*
+* \author
+*    Alexis Michael Tourapis        <alexis.tourapis@dolby.com>
+*
+* \date
+*    7. February 2009
+*
+* \brief
+*    Headerfile for distortion functions
+**************************************************************************
+*/
 
 #ifndef _MD_DISTORTION_H_
 #define _MD_DISTORTION_H_

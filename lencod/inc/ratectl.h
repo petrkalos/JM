@@ -1,20 +1,20 @@
 
 /*!
- ***************************************************************************
- * \file
- *    ratectl.h
- *
- * \author
- *    Zhengguo LI
- *    Athanasios Leontaris
- *
- * \date
- *    14 Jan 2003
- *
- * \brief
- *    Headerfile for rate control
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    ratectl.h
+*
+* \author
+*    Zhengguo LI
+*    Athanasios Leontaris
+*
+* \date
+*    14 Jan 2003
+*
+* \brief
+*    Headerfile for rate control
+**************************************************************************
+*/
 
 #ifndef _RATE_CTL_H_
 #define _RATE_CTL_H_

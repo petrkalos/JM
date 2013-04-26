@@ -1,19 +1,19 @@
 /*!
- ***************************************************************************
- * \file
- *    mode_decision.h
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>
- *
- * \date
- *    21. February 2005
- *
- * \brief
- *    Headerfile for mode decision
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    mode_decision.h
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>
+*
+* \date
+*    21. February 2005
+*
+* \brief
+*    Headerfile for mode decision
+**************************************************************************
+*/
 
 #ifndef _MODE_DECISION_H_
 #define _MODE_DECISION_H_

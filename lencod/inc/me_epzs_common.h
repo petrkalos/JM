@@ -23,78 +23,78 @@
 // Structure definitions
 typedef struct
 {
-  int mb_adaptive_frame_field_flag;
-  int size_x, size_y;
+	int mb_adaptive_frame_field_flag;
+	int size_x, size_y;
 
-  // Frame
-  MotionVector ***frame;  //!< motion vector       [list][subblock_x][subblock_y]
-  // Top field
-  MotionVector ***top;    //!< motion vector       [list][subblock_x][subblock_y]
-  // Bottom field
-  MotionVector ***bot;    //!< motion vector       [list][subblock_x][subblock_y]
+	// Frame
+	MotionVector ***frame;  //!< motion vector       [list][subblock_x][subblock_y]
+	// Top field
+	MotionVector ***top;    //!< motion vector       [list][subblock_x][subblock_y]
+	// Bottom field
+	MotionVector ***bot;    //!< motion vector       [list][subblock_x][subblock_y]
 } EPZSColocParams;
 
 typedef struct
 {
-  MotionVector motion;
-  int start_nmbr;
-  int next_points;
+	MotionVector motion;
+	int start_nmbr;
+	int next_points;
 }
 SPoint;
 
 struct epzs_struct
 {
-  int    searchPoints;
-  SPoint *point;
-  int    stopSearch;
-  int    nextLast;
-  struct epzs_struct *nextpattern;
+	int    searchPoints;
+	SPoint *point;
+	int    stopSearch;
+	int    nextLast;
+	struct epzs_struct *nextpattern;
 };
 
 typedef struct epzs_struct EPZSStructure;
 
 typedef enum
 {
-  SDIAMOND  = 0,
-  SQUARE    = 1,
-  EDIAMOND  = 2,
-  LDIAMOND  = 3,
-  SBDIAMOND = 4
+	SDIAMOND  = 0,
+	SQUARE    = 1,
+	EDIAMOND  = 2,
+	LDIAMOND  = 3,
+	SBDIAMOND = 4
 } EPZSPatterns;
 
 typedef struct epzs_params {
-  VideoParameters *p_Vid;
-  uint16 BlkCount;
-  int   searcharray;
+	VideoParameters *p_Vid;
+	uint16 BlkCount;
+	int   searcharray;
 
-  distblk medthres[8];
-  distblk maxthres[8];
-  distblk minthres[8];
-  distblk subthres[8];
+	distblk medthres[8];
+	distblk maxthres[8];
+	distblk minthres[8];
+	distblk subthres[8];
 
-  int mv_scale       [6][MAX_REFERENCE_PICTURES][MAX_REFERENCE_PICTURES];
-  int mv_scale_update[6][MAX_REFERENCE_PICTURES][MAX_REFERENCE_PICTURES];
+	int mv_scale       [6][MAX_REFERENCE_PICTURES][MAX_REFERENCE_PICTURES];
+	int mv_scale_update[6][MAX_REFERENCE_PICTURES][MAX_REFERENCE_PICTURES];
 
-  uint16 **EPZSMap;  //!< Memory Map definition
+	uint16 **EPZSMap;  //!< Memory Map definition
 
 #if EPZSREF
-  MotionVector *****p_motion;  //!< Array for storing Motion Vectors
+	MotionVector *****p_motion;  //!< Array for storing Motion Vectors
 #else
-  MotionVector ****p_motion;  //!< Array for storing Motion Vectors
+	MotionVector ****p_motion;  //!< Array for storing Motion Vectors
 #endif
-  distblk ***distortion;  //!< Array for storing SAD Values
-  distblk ***bi_distortion;  //!< Array for storing SAD Values
-  distblk ***distortion_hpel;  //!< Array for storing SAD Values
+	distblk ***distortion;  //!< Array for storing SAD Values
+	distblk ***bi_distortion;  //!< Array for storing SAD Values
+	distblk ***distortion_hpel;  //!< Array for storing SAD Values
 
-  //
-  EPZSStructure *searchPattern;
-  EPZSStructure *searchPatternD;
-  EPZSStructure *predictor;
-  // Window predictors
-  EPZSStructure *window_predictor;
-  EPZSStructure *window_predictor_ext;
-  // Co-located helper
-  EPZSColocParams *p_colocated;
+	//
+	EPZSStructure *searchPattern;
+	EPZSStructure *searchPatternD;
+	EPZSStructure *predictor;
+	// Window predictors
+	EPZSStructure *window_predictor;
+	EPZSStructure *window_predictor_ext;
+	// Co-located helper
+	EPZSColocParams *p_colocated;
 } EPZSParameters;
 
 
@@ -124,30 +124,30 @@ extern void  EPZS_setup_engine         (Macroblock *, InputParameters *);
 */
 static inline int add_predictor(MotionVector *cur_mv, MotionVector prd_mv, int mvScale, int shift_mv)
 {
-  *cur_mv = prd_mv;
-  cur_mv->mv_x = (short) rshift_rnd_sf((mvScale * cur_mv->mv_x), shift_mv);
-  cur_mv->mv_y = (short) rshift_rnd_sf((mvScale * cur_mv->mv_y), shift_mv);
-  return (*((int*) cur_mv) != 0);
+	*cur_mv = prd_mv;
+	cur_mv->mv_x = (short) rshift_rnd_sf((mvScale * cur_mv->mv_x), shift_mv);
+	cur_mv->mv_y = (short) rshift_rnd_sf((mvScale * cur_mv->mv_y), shift_mv);
+	return (*((int*) cur_mv) != 0);
 }
 
 static inline void scale_mv(MotionVector *out_mv, int scale, const MotionVector *mv, int shift_mv)
 {
-  out_mv->mv_x = (short) rshift_rnd_sf((scale * mv->mv_x), shift_mv);
-  out_mv->mv_y = (short) rshift_rnd_sf((scale * mv->mv_y), shift_mv);
+	out_mv->mv_x = (short) rshift_rnd_sf((scale * mv->mv_x), shift_mv);
+	out_mv->mv_y = (short) rshift_rnd_sf((scale * mv->mv_y), shift_mv);
 }
 
 static inline void scale_mv_xy(MotionVector *out_mv, int *scale, const MotionVector *mv, int shift_mv)
 {
-  out_mv->mv_x = (short) rshift_rnd_sf((scale[0] * mv->mv_x), shift_mv);
-  out_mv->mv_y = (short) rshift_rnd_sf((scale[1] * mv->mv_y), shift_mv);
+	out_mv->mv_x = (short) rshift_rnd_sf((scale[0] * mv->mv_x), shift_mv);
+	out_mv->mv_y = (short) rshift_rnd_sf((scale[1] * mv->mv_y), shift_mv);
 }
 
 static inline void compute_scaled(MotionVector *MotionVector0, MotionVector *MotionVector1, int tempmv_scale[2], const MotionVector *mv, int invmv_precision)
 {
-  MotionVector0->mv_x = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_0] * mv->mv_x), invmv_precision));
-  MotionVector0->mv_y = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_0] * mv->mv_y), invmv_precision));
-  MotionVector1->mv_x = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_1] * mv->mv_x), invmv_precision));
-  MotionVector1->mv_y = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_1] * mv->mv_y), invmv_precision));
+	MotionVector0->mv_x = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_0] * mv->mv_x), invmv_precision));
+	MotionVector0->mv_y = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_0] * mv->mv_y), invmv_precision));
+	MotionVector1->mv_x = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_1] * mv->mv_x), invmv_precision));
+	MotionVector1->mv_y = (short) iClip3 (-32768, 32767, rshift_rnd_sf((tempmv_scale[LIST_1] * mv->mv_y), invmv_precision));
 }
 
 #endif

@@ -1,17 +1,17 @@
 /*!
- *************************************************************************************
- * \file intra16x16_pred.h
- *
- * \brief
- *    definitions for intra 16x16 prediction
- *
- * \author
- *      Main contributors (see contributors.h for copyright, 
- *                         address and affiliation details)
- *      - Alexis Michael Tourapis  <alexismt@ieee.org>
- *
- *************************************************************************************
- */
+*************************************************************************************
+* \file intra16x16_pred.h
+*
+* \brief
+*    definitions for intra 16x16 prediction
+*
+* \author
+*      Main contributors (see contributors.h for copyright, 
+*                         address and affiliation details)
+*      - Alexis Michael Tourapis  <alexismt@ieee.org>
+*
+*************************************************************************************
+*/
 
 #ifndef _INTRA16x16_PRED_H_
 #define _INTRA16x16_PRED_H_

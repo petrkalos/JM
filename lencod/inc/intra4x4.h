@@ -1,16 +1,16 @@
 
 /*!
- ************************************************************************
- * \file intra4x4.h
- *
- * \brief
- *    intra 4x4 functions
- *
- * \author
- *    - Alexis Michael Tourapis         <alexismt@ieee.org>
- *
- ************************************************************************
- */
+************************************************************************
+* \file intra4x4.h
+*
+* \brief
+*    intra 4x4 functions
+*
+* \author
+*    - Alexis Michael Tourapis         <alexismt@ieee.org>
+*
+************************************************************************
+*/
 
 #ifndef _INTRA4x4_H_
 #define _INTRA4x4_H_

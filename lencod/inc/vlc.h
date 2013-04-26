@@ -1,14 +1,14 @@
 
 /*!
- *************************************************************************************
- * \file vlc.h
- *
- * \brief
- *    Prototypes for VLC coding funtions
- * \author
- *     Karsten Suehring
- *************************************************************************************
- */
+*************************************************************************************
+* \file vlc.h
+*
+* \brief
+*    Prototypes for VLC coding funtions
+* \author
+*     Karsten Suehring
+*************************************************************************************
+*/
 
 #ifndef _VLC_H_
 #define _VLC_H_
@@ -64,9 +64,9 @@ extern void writeFlag_CAVLC (Macroblock *currMB, SyntaxElement *se, DataPartitio
 extern void reset_mb_nz_coeff(VideoParameters *p_Vid, int mb_number); 
 extern int bs_bitlength(Bitstream *bitstream);
 extern int GetBits(byte *buffer,
-                   int totbitoffset,
-                   int *info, 
-                   int bitcount,
-                   int numbits);
+	int totbitoffset,
+	int *info, 
+	int bitcount,
+	int numbits);
 #endif
 

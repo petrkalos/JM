@@ -1,17 +1,17 @@
 
 /*!
- ***************************************************************************
- *
- * \file filehandle.h
- *
- * \brief
- *
- * \date
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *
- **************************************************************************/
+***************************************************************************
+*
+* \file filehandle.h
+*
+* \brief
+*
+* \date
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*
+**************************************************************************/
 
 #ifndef _FILEHANDLE_H_
 #define _FILEHANDLE_H_

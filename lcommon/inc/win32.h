@@ -1,16 +1,16 @@
 
 /*!
- ************************************************************************
- *  \file
- *     win32.h
- *
- *  \brief
- *     win32 definitions for H.264 codec.
- *
- *  \author
- *
- ************************************************************************
- */
+************************************************************************
+*  \file
+*     win32.h
+*
+*  \brief
+*     win32 definitions for H.264 codec.
+*
+*  \author
+*
+************************************************************************
+*/
 #ifndef _WIN32_H_
 #define _WIN32_H_
 
@@ -75,7 +75,7 @@ typedef int   intptr_t;
 # define  OPEN_PERMISSIONS S_IRUSR | S_IWUSR
 
 # if __STDC_VERSION__ >= 199901L
-   /* "inline" is a keyword */
+/* "inline" is a keyword */
 # else
 #  define inline /* nothing */
 # endif

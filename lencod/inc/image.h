@@ -1,31 +1,31 @@
 
 /*!
- ************************************************************************
- * \file image.h
- *
- * \brief
- *    headers for image processing
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Karsten Suehring
- *     - Inge Lille-Langoy               <inge.lille-langoy@telenor.com>
- *     - Alexis Michael Tourapis         <alexismt@ieee.org> 
- *  
- ************************************************************************
- */
+************************************************************************
+* \file image.h
+*
+* \brief
+*    headers for image processing
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Karsten Suehring
+*     - Inge Lille-Langoy               <inge.lille-langoy@telenor.com>
+*     - Alexis Michael Tourapis         <alexismt@ieee.org> 
+*  
+************************************************************************
+*/
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
 
 #include "mbuffer.h"
 
 typedef struct coding_info {
-  short type;
-  int   intras;   
-  int   sumFrameQP; 
-  int   num_ref_idx_l0; 
-  int   num_ref_idx_l1; 
-  pic_parameter_set_rbsp_t *active_pps;
+	short type;
+	int   intras;   
+	int   sumFrameQP; 
+	int   num_ref_idx_l0; 
+	int   num_ref_idx_l1; 
+	pic_parameter_set_rbsp_t *active_pps;
 } CodingInfo;
 
 extern int     encode_one_frame      ( VideoParameters *p_Vid, InputParameters *p_Inp);

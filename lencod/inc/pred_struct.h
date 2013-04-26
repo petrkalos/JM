@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- * \file
- *    pred_struct.h
- *
- * \author
- *    Athanasios Leontaris           <aleon@dolby.com>   
- *
- * \date
- *    June 8, 2009
- *
- * \brief
- *    Header file for prediction structure function headers
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    pred_struct.h
+*
+* \author
+*    Athanasios Leontaris           <aleon@dolby.com>   
+*
+* \date
+*    June 8, 2009
+*
+* \brief
+*    Header file for prediction structure function headers
+**************************************************************************
+*/
 
 #ifndef _PRED_STRUCT_H_
 #define _PRED_STRUCT_H_

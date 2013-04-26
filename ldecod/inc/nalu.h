@@ -1,17 +1,17 @@
 
 /*!
- **************************************************************************************
- * \file
- *    nalu.h
- * \brief
- *    Common NALU support functions
- *
- * \date 25 November 2002
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *      - Stephan Wenger        <stewe@cs.tu-berlin.de>
- ***************************************************************************************
- */
+**************************************************************************************
+* \file
+*    nalu.h
+* \brief
+*    Common NALU support functions
+*
+* \date 25 November 2002
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*      - Stephan Wenger        <stewe@cs.tu-berlin.de>
+***************************************************************************************
+*/
 
 
 #ifndef _NALU_H_

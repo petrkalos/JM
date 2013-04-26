@@ -1,12 +1,12 @@
 /*!
- *****************************************************************************************
- * \file
- *     me_fullfast_otf.h
- *
- * \brief
- *    Headerfile for Fast Full Search motion estimation extention on-the-fly interpolation
- *****************************************************************************************
- */
+*****************************************************************************************
+* \file
+*     me_fullfast_otf.h
+*
+* \brief
+*    Headerfile for Fast Full Search motion estimation extention on-the-fly interpolation
+*****************************************************************************************
+*/
 
 
 #ifndef _ME_FULLFAST_OTF_H_

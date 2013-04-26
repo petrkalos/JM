@@ -1,19 +1,19 @@
 
 /*!
- ***************************************************************************
- *
- * \file transform.h
- *
- * \brief
- *    prototypes of transform functions
- *
- * \date
- *    10 July 2007
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *    Alexis Michael Tourapis
- **************************************************************************/
+***************************************************************************
+*
+* \file transform.h
+*
+* \brief
+*    prototypes of transform functions
+*
+* \date
+*    10 July 2007
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*    Alexis Michael Tourapis
+**************************************************************************/
 
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_

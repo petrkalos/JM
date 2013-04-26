@@ -1,16 +1,16 @@
 
 /*!
- *************************************************************************************
- * \file explicit_gop.h
- *
- * \brief
- *    Functions for explicit gop and hierarchy support
- *
- * \author
- *     Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis          <alexismt@ieee.org>
- *************************************************************************************
- */
+*************************************************************************************
+* \file explicit_gop.h
+*
+* \brief
+*    Functions for explicit gop and hierarchy support
+*
+* \author
+*     Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis          <alexismt@ieee.org>
+*************************************************************************************
+*/
 
 #ifndef _EXPLICIT_GOP_H_
 #define _EXPLICIT_GOP_H_

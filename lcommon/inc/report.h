@@ -1,15 +1,15 @@
 
 /*!
- ************************************************************************
- * \file report.h
- *
- * \brief
- *    headers for frame format related information
- *
- * \author
- *
- ************************************************************************
- */
+************************************************************************
+* \file report.h
+*
+* \brief
+*    headers for frame format related information
+*
+* \author
+*
+************************************************************************
+*/
 #ifndef _REPORT_H_
 #define _REPORT_H_
 #include "contributors.h"

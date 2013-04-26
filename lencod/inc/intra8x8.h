@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- *
- * \file intra8x8.h
- *
- * \brief
+***************************************************************************
+*
+* \file intra8x8.h
+*
+* \brief
 *    prototypes of 8x8 intra prediction
-  *
- * \date
- *    5. February 2009
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *    Alexis Michael Tourapis
- **************************************************************************/
+*
+* \date
+*    5. February 2009
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*    Alexis Michael Tourapis
+**************************************************************************/
 
 #ifndef _INTRA8X8_H_
 #define _INTRA8X8_H_

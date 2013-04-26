@@ -1,21 +1,21 @@
 
 /*!
- ************************************************************************
- * \file  erc_api.h
- *
- * \brief
- *      External (still inside video decoder) interface for error concealment module
- *
- * \author
- *      - Ari Hourunranta                <ari.hourunranta@nokia.com>
- *      - Ye-Kui Wang                    <wyk@ieee.org>
- *      - Jill Boyce                     <jill.boyce@thomson.net>
- *      - Saurav K Bandyopadhyay         <saurav@ieee.org>
- *      - Zhenyu Wu                      <Zhenyu.Wu@thomson.net
- *      - Purvin Pandit                  <Purvin.Pandit@thomson.net>
- *
- * ************************************************************************
- */
+************************************************************************
+* \file  erc_api.h
+*
+* \brief
+*      External (still inside video decoder) interface for error concealment module
+*
+* \author
+*      - Ari Hourunranta                <ari.hourunranta@nokia.com>
+*      - Ye-Kui Wang                    <wyk@ieee.org>
+*      - Jill Boyce                     <jill.boyce@thomson.net>
+*      - Saurav K Bandyopadhyay         <saurav@ieee.org>
+*      - Zhenyu Wu                      <Zhenyu.Wu@thomson.net
+*      - Purvin Pandit                  <Purvin.Pandit@thomson.net>
+*
+* ************************************************************************
+*/
 
 
 #ifndef _ERC_API_H_
@@ -45,22 +45,22 @@ threshold, concealByCopy is used, otherwise concealByTrial is used. */
 */
 
 #define xPosYBlock(currYBlockNum,picSizeX) \
-((currYBlockNum)%((picSizeX)>>3))
+	((currYBlockNum)%((picSizeX)>>3))
 
 #define yPosYBlock(currYBlockNum,picSizeX) \
-((currYBlockNum)/((picSizeX)>>3))
+	((currYBlockNum)/((picSizeX)>>3))
 
 #define xPosMB(currMBNum,picSizeX) \
-((currMBNum)%((picSizeX)>>4))
+	((currMBNum)%((picSizeX)>>4))
 
 #define yPosMB(currMBNum,picSizeX) \
-((currMBNum)/((picSizeX)>>4))
+	((currMBNum)/((picSizeX)>>4))
 
 #define MBxy2YBlock(currXPos,currYPos,comp,picSizeX) \
-((((currYPos)<<1)+((comp)>>1))*((picSizeX)>>3)+((currXPos)<<1)+((comp)&1))
+	((((currYPos)<<1)+((comp)>>1))*((picSizeX)>>3)+((currXPos)<<1)+((comp)&1))
 
 #define MBNum2YBlock(currMBNum,comp,picSizeX) \
-MBxy2YBlock(xPosMB((currMBNum),(picSizeX)),yPosMB((currMBNum),(picSizeX)),(comp),(picSizeX))
+	MBxy2YBlock(xPosMB((currMBNum),(picSizeX)),yPosMB((currMBNum),(picSizeX)),(comp),(picSizeX))
 
 
 /*
@@ -70,40 +70,40 @@ MBxy2YBlock(xPosMB((currMBNum),(picSizeX)),yPosMB((currMBNum),(picSizeX)),(comp)
 /* segment data structure */
 typedef struct ercSegment_s
 {
-  short     startMBPos;
-  short     endMBPos;
-  char      fCorrupted;
+	short     startMBPos;
+	short     endMBPos;
+	char      fCorrupted;
 } ercSegment_t;
 
 /* Error detector & concealment instance data structure */
 typedef struct ercVariables_s
 {
-  /*  Number of macroblocks (size or size/4 of the arrays) */
-  int   nOfMBs;
-  /* Number of segments (slices) in frame */
-  int     nOfSegments;
+	/*  Number of macroblocks (size or size/4 of the arrays) */
+	int   nOfMBs;
+	/* Number of segments (slices) in frame */
+	int     nOfSegments;
 
-  /*  Array for conditions of Y blocks */
-  char     *yCondition;
-  /*  Array for conditions of U blocks */
-  char     *uCondition;
-  /*  Array for conditions of V blocks */
-  char     *vCondition;
+	/*  Array for conditions of Y blocks */
+	char     *yCondition;
+	/*  Array for conditions of U blocks */
+	char     *uCondition;
+	/*  Array for conditions of V blocks */
+	char     *vCondition;
 
-  /* Array for Slice level information */
-  ercSegment_t *segments;
-  int     currSegment;
+	/* Array for Slice level information */
+	ercSegment_t *segments;
+	int     currSegment;
 
-  /* Conditions of the MBs of the previous frame */
-  char   *prevFrameYCondition;
+	/* Conditions of the MBs of the previous frame */
+	char   *prevFrameYCondition;
 
-  /* Flag telling if the current segment was found to be corrupted */
-  int   currSegmentCorrupted;
-  /* Counter for corrupted segments per picture */
-  int   nOfCorruptedSegments;
+	/* Flag telling if the current segment was found to be corrupted */
+	int   currSegmentCorrupted;
+	/* Counter for corrupted segments per picture */
+	int   nOfCorruptedSegments;
 
-  /* State variables for error detector and concealer */
-  int   concealment;
+	/* State variables for error detector and concealer */
+	int   concealment;
 
 } ercVariables_t;
 
@@ -125,7 +125,7 @@ void ercMarkCurrMBConcealed( int currMBNum, int comp, int picSizeX, ercVariables
 
 int ercConcealIntraFrame( VideoParameters *p_Vid, frame *recfr, int picSizeX, int picSizeY, ercVariables_t *errorVar );
 int ercConcealInterFrame( frame *recfr, objectBuffer_t *object_list,
-                          int picSizeX, int picSizeY, ercVariables_t *errorVar, int chroma_format_idc );
+	int picSizeX, int picSizeY, ercVariables_t *errorVar, int chroma_format_idc );
 
 
 /* Thomson APIs for concealing entire frame loss */
@@ -134,9 +134,9 @@ int ercConcealInterFrame( frame *recfr, objectBuffer_t *object_list,
 #include "output.h"
 
 struct concealment_node {
-    StorablePicture* picture;
-    int  missingpocs;
-    struct concealment_node *next;
+	StorablePicture* picture;
+	int  missingpocs;
+	struct concealment_node *next;
 };
 
 extern struct concealment_node * init_node(StorablePicture* , int );

@@ -1,16 +1,16 @@
 
 /*!
- *************************************************************************************
- * \file leaky_bucket.h
- *
- * \brief
- *    Header for Leaky Buffer parameters
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *    - Shankar Regunathan                   <shanre@microsoft.com>
- *************************************************************************************
- */
+*************************************************************************************
+* \file leaky_bucket.h
+*
+* \brief
+*    Header for Leaky Buffer parameters
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*    - Shankar Regunathan                   <shanre@microsoft.com>
+*************************************************************************************
+*/
 #ifndef _LEAKY_BUCKET_H_
 #define _LEAKY_BUCKET_H_
 

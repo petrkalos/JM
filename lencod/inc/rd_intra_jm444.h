@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- * \file
- *    rd_intra_jm444.h
- *
- * \author
- *    Alexis Michael Tourapis
- *
- * \date
- *    2 January 2008
- *
- * \brief
- *    Headerfile for JM rd based intra mode decision (High444)
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    rd_intra_jm444.h
+*
+* \author
+*    Alexis Michael Tourapis
+*
+* \date
+*    2 January 2008
+*
+* \brief
+*    Headerfile for JM rd based intra mode decision (High444)
+**************************************************************************
+*/
 
 #ifndef _RD_INTRA_JM444_H_
 #define _RD_INTRA_JM444_H_

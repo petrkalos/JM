@@ -1,18 +1,18 @@
 /*!
- ************************************************************************
- * \file  memalloc.h
- *
- * \brief
- *    Memory allocation and free helper funtions
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Karsten Suehring
- *     - Alexis Michael Tourapis         <alexismt@ieee.org> 
- *     - Yuwen He                        <yhe@dolby.com>
- *
- ************************************************************************
- */
+************************************************************************
+* \file  memalloc.h
+*
+* \brief
+*    Memory allocation and free helper funtions
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Karsten Suehring
+*     - Alexis Michael Tourapis         <alexismt@ieee.org> 
+*     - Yuwen He                        <yhe@dolby.com>
+*
+************************************************************************
+*/
 
 #ifndef _MEMALLOC_H_
 #define _MEMALLOC_H_
@@ -186,32 +186,32 @@ extern void free_mem3Dpel_2SLayers(imgpel ****buf0, imgpel ****buf1);
 
 static inline void* mem_malloc(size_t nitems)
 {
-  void *d;
-  if((d = malloc(nitems)) == NULL)
-  {
-    no_mem_exit("malloc failed.\n");
-    return NULL;
-  }
-  return d;
+	void *d;
+	if((d = malloc(nitems)) == NULL)
+	{
+		no_mem_exit("malloc failed.\n");
+		return NULL;
+	}
+	return d;
 }
 
 /*!
- ************************************************************************
- * \brief
- *    allocate and set memory aligned at SSE_MEMORY_ALIGNMENT
- *
- ************************************************************************/
+************************************************************************
+* \brief
+*    allocate and set memory aligned at SSE_MEMORY_ALIGNMENT
+*
+************************************************************************/
 static inline void* mem_calloc(size_t nitems, size_t size)
 {
-  size_t padded_size = nitems * size; 
-  void *d = mem_malloc(padded_size);
-  memset(d, 0, (int)padded_size);
-  return d;
+	size_t padded_size = nitems * size; 
+	void *d = mem_malloc(padded_size);
+	memset(d, 0, (int)padded_size);
+	return d;
 }
 
 static inline void mem_free(void *a)
 {
-  free_pointer(a);
+	free_pointer(a);
 }
 
 #endif

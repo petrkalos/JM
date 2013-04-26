@@ -1,15 +1,15 @@
 /*!
- ***************************************************************************
- * \file
- *    q_around.h
- *
- * \author
- *    Alexis Michael Tourapis
- *
- * \brief
- *    Headerfile for Quantization Adaptive Rounding
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    q_around.h
+*
+* \author
+*    Alexis Michael Tourapis
+*
+* \brief
+*    Headerfile for Quantization Adaptive Rounding
+**************************************************************************
+*/
 
 #ifndef _Q_AROUND_H_
 #define _Q_AROUND_H_

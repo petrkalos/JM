@@ -1,18 +1,18 @@
 
 /*!
- ***************************************************************************
- *
- * \file fmo.h
- *
- * \brief
- *    Support for Flexible Macroblock Ordering
- *
- * \date
- *    16 June 2002
- *
- * \author
- *    Stephan Wenger   stewe@cs.tu-berlin.de
- **************************************************************************/
+***************************************************************************
+*
+* \file fmo.h
+*
+* \brief
+*    Support for Flexible Macroblock Ordering
+*
+* \date
+*    16 June 2002
+*
+* \author
+*    Stephan Wenger   stewe@cs.tu-berlin.de
+**************************************************************************/
 
 #ifndef _FMO_H_
 #define _FMO_H_

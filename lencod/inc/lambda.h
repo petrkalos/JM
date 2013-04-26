@@ -1,19 +1,19 @@
 /*!
- ***************************************************************************
- * \file
- *    lambda.h
- *
- * \date
- *    13 September 2009
- *
- * \brief
- *    Headerfile for lagrangian lambda related computations
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org> 
+***************************************************************************
+* \file
+*    lambda.h
+*
+* \date
+*    13 September 2009
+*
+* \brief
+*    Headerfile for lagrangian lambda related computations
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org> 
 
- **************************************************************************
- */
+**************************************************************************
+*/
 
 #ifndef _LAMBDA_H_
 #define _LAMBDA_H_

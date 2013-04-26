@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- * \file
- *    img_dist_snr.h
- *
- * \author
- *    Woo-Shik Kim
- *
- * \date
- *    29 May 2008
- *
- * \brief
- *    Headerfile to calculate signal to noise ratio (SNR)
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    img_dist_snr.h
+*
+* \author
+*    Woo-Shik Kim
+*
+* \date
+*    29 May 2008
+*
+* \brief
+*    Headerfile to calculate signal to noise ratio (SNR)
+**************************************************************************
+*/
 
 #ifndef _IMG_DIST_SNR_H_
 #define _IMG_DIST_SNR_H_

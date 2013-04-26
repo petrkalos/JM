@@ -1,17 +1,17 @@
 /*!
- *************************************************************************************
- * \file intra4x4_pred.h
- *
- * \brief
- *    definitions for intra 4x4 prediction
- *
- * \author
- *      Main contributors (see contributors.h for copyright, 
- *                         address and affiliation details)
- *      - Alexis Michael Tourapis  <alexismt@ieee.org>
- *
- *************************************************************************************
- */
+*************************************************************************************
+* \file intra4x4_pred.h
+*
+* \brief
+*    definitions for intra 4x4 prediction
+*
+* \author
+*      Main contributors (see contributors.h for copyright, 
+*                         address and affiliation details)
+*      - Alexis Michael Tourapis  <alexismt@ieee.org>
+*
+*************************************************************************************
+*/
 
 #ifndef _INTRA4x4_PRED_H_
 #define _INTRA4x4_PRED_H_

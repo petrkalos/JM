@@ -1,19 +1,19 @@
 
 /*!
- ************************************************************************
- * \file
- *    macroblock.h
- *
- * \brief
- *    Arrays for macroblock processing
- *
- * \author
- *    Inge Lille-Langoy               <inge.lille-langoy@telenor.com>     \n
- *    Telenor Satellite Services                                          \n
- *    P.O.Box 6914 St.Olavs plass                                         \n
- *    N-0130 Oslo, Norway
- *
- ************************************************************************/
+************************************************************************
+* \file
+*    macroblock.h
+*
+* \brief
+*    Arrays for macroblock processing
+*
+* \author
+*    Inge Lille-Langoy               <inge.lille-langoy@telenor.com>     \n
+*    Telenor Satellite Services                                          \n
+*    P.O.Box 6914 St.Olavs plass                                         \n
+*    N-0130 Oslo, Norway
+*
+************************************************************************/
 
 #ifndef _MACROBLOCK_H_
 #define _MACROBLOCK_H_
@@ -23,48 +23,48 @@
 
 static const int block8x8_idx[3][4][4] = 
 {
-  { 
-    {0, 1, 0, 0},
-    {2, 3, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0}
-  },
-  {
-    {0, 1, 0, 0},
-    {0, 1, 0, 0},
-    {2, 3, 0, 0},
-    {2, 3, 0, 0}
-  },
-  {
-    {0, 0, 1, 1},
-    {0, 0, 1, 1},
-    {2, 2, 3, 3},
-    {2, 2, 3, 3}
-  }
+	{ 
+		{0, 1, 0, 0},
+		{2, 3, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0}
+	},
+	{
+		{0, 1, 0, 0},
+		{0, 1, 0, 0},
+		{2, 3, 0, 0},
+		{2, 3, 0, 0}
+	},
+	{
+		{0, 0, 1, 1},
+		{0, 0, 1, 1},
+		{2, 2, 3, 3},
+		{2, 2, 3, 3}
+	}
 };
 
 static const short part_size[8][2] = 
 {
-  {4, 4},
-  {4, 4},
-  {4, 2},
-  {2, 4},
-  {2, 2},
-  {2, 1},
-  {1, 2},
-  {1, 1}
+	{4, 4},
+	{4, 4},
+	{4, 2},
+	{2, 4},
+	{2, 2},
+	{2, 1},
+	{1, 2},
+	{1, 1}
 };
 
 static const short block_size[8][2] = 
 {
-  {16, 16},
-  {16, 16},
-  {16, 8},
-  {8, 16},
-  {8, 8},
-  {8, 4},
-  {4, 8},
-  {4, 4}
+	{16, 16},
+	{16, 16},
+	{16, 8},
+	{8, 16},
+	{8, 8},
+	{8, 4},
+	{4, 8},
+	{4, 4}
 };
 
 extern void  next_macroblock  (Macroblock* currMB);

@@ -1,20 +1,20 @@
 
 /*!
- ***************************************************************************
- * \file
- *    cabac.h
- *
- * \brief
- *    Header file for entropy coding routines
- *
- * \author
- *    Detlev Marpe                                                         \n
- *    Copyright (C) 2000 HEINRICH HERTZ INSTITUTE All Rights Reserved.
- *
- * \date
- *    21. Oct 2000 (Changes by Tobias Oelbaum 28.08.2001)
- ***************************************************************************
- */
+***************************************************************************
+* \file
+*    cabac.h
+*
+* \brief
+*    Header file for entropy coding routines
+*
+* \author
+*    Detlev Marpe                                                         \n
+*    Copyright (C) 2000 HEINRICH HERTZ INSTITUTE All Rights Reserved.
+*
+* \date
+*    21. Oct 2000 (Changes by Tobias Oelbaum 28.08.2001)
+***************************************************************************
+*/
 
 #ifndef _CABAC_H_
 #define _CABAC_H_

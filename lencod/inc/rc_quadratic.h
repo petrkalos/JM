@@ -1,20 +1,20 @@
 
 /*!
- ***************************************************************************
- * \file
- *    rc_quadratic.h
- *
- * \author
- *    Zhengguo LI
- *    Athanasios Leontaris
- *
- * \date
- *    14 Jan 2003
- *
- * \brief
- *    Headerfile for rate control
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    rc_quadratic.h
+*
+* \author
+*    Zhengguo LI
+*    Athanasios Leontaris
+*
+* \date
+*    14 Jan 2003
+*
+* \brief
+*    Headerfile for rate control
+**************************************************************************
+*/
 
 #ifndef _RC_QUADRATIC_H_
 #define _RC_QUADRATIC_H_
@@ -32,7 +32,7 @@ extern void rc_init_seq          (VideoParameters *p_Vid, InputParameters *p_Inp
 extern void rc_init_GOP          (VideoParameters *p_Vid, InputParameters *p_Inp, RCQuadratic *p_quad, RCGeneric *p_gen, int np, int nb);
 extern void rc_update_pict_frame (VideoParameters *p_Vid, InputParameters *p_Inp, RCQuadratic *p_quad, RCGeneric *p_gen, int nbits);
 extern void rc_init_pict         (VideoParameters *p_Vid, InputParameters *p_Inp, 
-                           RCQuadratic *p_quad, RCGeneric *p_gen, int fieldpic, int topfield, int targetcomputation, float mult);
+	RCQuadratic *p_quad, RCGeneric *p_gen, int fieldpic, int topfield, int targetcomputation, float mult);
 extern void rc_update_pict       (VideoParameters *p_Vid, InputParameters *p_Inp, RCQuadratic *p_quad, RCGeneric *p_gen, int nbits);
 extern void rc_update_picture    (VideoParameters *p_Vid, InputParameters *p_Inp, int bits);
 

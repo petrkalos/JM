@@ -1,19 +1,19 @@
 /*!
- ***************************************************************************
- * \file
- *    mode_decision_p8x8.h
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>
- *
- * \date
- *    1 September 2009
- *
- * \brief
- *    Headerfile for 8x8 mode decision
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    mode_decision_p8x8.h
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>
+*
+* \date
+*    1 September 2009
+*
+* \brief
+*    Headerfile for 8x8 mode decision
+**************************************************************************
+*/
 
 #ifndef _MODE_DECISION_P8x8_H_
 #define _MODE_DECISION_P8x8_H_

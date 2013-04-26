@@ -1,16 +1,16 @@
 
 /*!
- ************************************************************************
- * \file io_raw.h
- *
- * \brief
- *    I/O functions related to raw images
- *
- * \author
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>
- *
- ************************************************************************
- */
+************************************************************************
+* \file io_raw.h
+*
+* \brief
+*    I/O functions related to raw images
+*
+* \author
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>
+*
+************************************************************************
+*/
 
 #ifndef _IO_RAW_H_
 #define _IO_RAW_H_

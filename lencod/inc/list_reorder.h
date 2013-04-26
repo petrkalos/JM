@@ -1,20 +1,20 @@
 /*!
- ***************************************************************************
- * \file
- *    list_reorder.h
- *
- * \date
- *    25 Feb 2009
- *
- * \brief
- *    Headerfile for slice-related functions
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Athanasios Leontaris            <aleon@dolby.com>
- *     - Karsten Suehring
- *     - Alexis Michael Tourapis         <alexismt@ieee.org> 
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    list_reorder.h
+*
+* \date
+*    25 Feb 2009
+*
+* \brief
+*    Headerfile for slice-related functions
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Athanasios Leontaris            <aleon@dolby.com>
+*     - Karsten Suehring
+*     - Alexis Michael Tourapis         <alexismt@ieee.org> 
+**************************************************************************
+*/
 
 #ifndef _LIST_REORDER_H_
 #define _LIST_REORDER_H_

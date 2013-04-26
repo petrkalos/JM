@@ -1,18 +1,18 @@
 
 /*!
- ************************************************************************
- * \file img_distortion.h
- *
- * \brief
- *    Distortion related definitions
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>
- *     - Woo-Shik Kim                    <wooshik.kim@usc.edu>
- *
- ************************************************************************
- */
+************************************************************************
+* \file img_distortion.h
+*
+* \brief
+*    Distortion related definitions
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>
+*     - Woo-Shik Kim                    <wooshik.kim@usc.edu>
+*
+************************************************************************
+*/
 
 #ifndef _IMG_DISTORTION_H_
 #define _IMG_DISTORTION_H_

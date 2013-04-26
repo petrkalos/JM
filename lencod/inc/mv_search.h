@@ -1,17 +1,17 @@
 
 /*!
- ************************************************************************
- * \file mv_search.h
- *
- * \brief
- *   array definition for motion search
- *
- * \author
- *    Inge Lille-Langoy               <inge.lille-langoy@telenor.com>   \n
- *    Alexis Michael Tourapis         <alexis.tourapis@dolby.com>       \n
- *
- ************************************************************************
- */
+************************************************************************
+* \file mv_search.h
+*
+* \brief
+*   array definition for motion search
+*
+* \author
+*    Inge Lille-Langoy               <inge.lille-langoy@telenor.com>   \n
+*    Alexis Michael Tourapis         <alexis.tourapis@dolby.com>       \n
+*
+************************************************************************
+*/
 
 #ifndef _MV_SEARCH_H_
 #define _MV_SEARCH_H_
@@ -51,35 +51,35 @@ extern void get_search_range(MEBlock *mv_block, InputParameters *p_Inp, short re
 
 static inline void add_mvs(MotionVector *mv0, const MotionVector *mv1)
 {
-  mv0->mv_x = (short) (mv0->mv_x + mv1->mv_x);
-  mv0->mv_y = (short) (mv0->mv_y + mv1->mv_y);
+	mv0->mv_x = (short) (mv0->mv_x + mv1->mv_x);
+	mv0->mv_y = (short) (mv0->mv_y + mv1->mv_y);
 }
 
 static inline MotionVector add_MVs(MotionVector mv0, const MotionVector *mv1)
 {
-  mv0.mv_x = (short) (mv0.mv_x + mv1->mv_x);
-  mv0.mv_y = (short) (mv0.mv_y + mv1->mv_y);
-  
-  return (mv0);
+	mv0.mv_x = (short) (mv0.mv_x + mv1->mv_x);
+	mv0.mv_y = (short) (mv0.mv_y + mv1->mv_y);
+
+	return (mv0);
 }
 
 static inline MotionVector pad_MVs(MotionVector mv0, MEBlock *mv_block)
 {
-  mv0.mv_x = (short) (mv0.mv_x + mv_block->pos_x_padded);
-  mv0.mv_y = (short) (mv0.mv_y + mv_block->pos_y_padded);
-  
-  return (mv0);
+	mv0.mv_x = (short) (mv0.mv_x + mv_block->pos_x_padded);
+	mv0.mv_y = (short) (mv0.mv_y + mv_block->pos_y_padded);
+
+	return (mv0);
 }
 
 static inline int64 overflow_weight_cost(int lambda, int bits)
 {  
 #if JCOST_CALC_SCALEUP  
-  return ( ((int64)lambda) * ((int64)(bits)) );
+	return ( ((int64)lambda) * ((int64)(bits)) );
 #else
 #if (USE_RND_COST)
-  return (i64_rshift_rnd_sf(((int64)lambda) * ((int64)(bits)) , LAMBDA_ACCURACY_BITS));
+	return (i64_rshift_rnd_sf(((int64)lambda) * ((int64)(bits)) , LAMBDA_ACCURACY_BITS));
 #else
-  return (((int64)lambda) * ((int64)(bits)) >> LAMBDA_ACCURACY_BITS);
+	return (((int64)lambda) * ((int64)(bits)) >> LAMBDA_ACCURACY_BITS);
 #endif
 #endif
 }
@@ -87,12 +87,12 @@ static inline int64 overflow_weight_cost(int lambda, int bits)
 static inline distblk weight_cost(int lambda, int bits)
 {  
 #if JCOST_CALC_SCALEUP  
-  return ( ((distblk)lambda) * ((distblk)(bits)) );
+	return ( ((distblk)lambda) * ((distblk)(bits)) );
 #else
 #if (USE_RND_COST)
-  return (rshift_rnd_sf((lambda) * (bits), LAMBDA_ACCURACY_BITS));
+	return (rshift_rnd_sf((lambda) * (bits), LAMBDA_ACCURACY_BITS));
 #else
-  return (((lambda) * (bits)) >> LAMBDA_ACCURACY_BITS);
+	return (((lambda) * (bits)) >> LAMBDA_ACCURACY_BITS);
 #endif
 #endif
 }
@@ -100,41 +100,41 @@ static inline distblk weight_cost(int lambda, int bits)
 static inline distblk mv_cost(const VideoParameters *p_Vid, int lambda, const MotionVector *mv, const MotionVector *pmv)
 {
 #if JCOST_CALC_SCALEUP
-  int *mvbits = p_Vid->mvbits;
-  return ( ((distblk)lambda) *((distblk)(mvbits[mv->mv_x - pmv->mv_x] + mvbits[mv->mv_y - pmv->mv_y])) );
+	int *mvbits = p_Vid->mvbits;
+	return ( ((distblk)lambda) *((distblk)(mvbits[mv->mv_x - pmv->mv_x] + mvbits[mv->mv_y - pmv->mv_y])) );
 #else
 #if (USE_RND_COST)
-  return (rshift_rnd_sf((lambda *(p_Vid->mvbits[mv->mv_x - pmv->mv_x] + p_Vid->mvbits[mv->mv_y - pmv->mv_y])), LAMBDA_ACCURACY_BITS));
+	return (rshift_rnd_sf((lambda *(p_Vid->mvbits[mv->mv_x - pmv->mv_x] + p_Vid->mvbits[mv->mv_y - pmv->mv_y])), LAMBDA_ACCURACY_BITS));
 #else
-  return ((lambda *(p_Vid->mvbits[mv->mv_x - pmv->mv_x] + p_Vid->mvbits[mv->mv_y - pmv->mv_y]))>> LAMBDA_ACCURACY_BITS);
+	return ((lambda *(p_Vid->mvbits[mv->mv_x - pmv->mv_x] + p_Vid->mvbits[mv->mv_y - pmv->mv_y]))>> LAMBDA_ACCURACY_BITS);
 #endif
 #endif
 }
 
 static inline distblk ref_cost(const Slice *currSlice, int lambda, short ref, int list_offset)
 {
-  if (currSlice->listXsize[list_offset] <= 1)
-    return 0;
-  else
-  {
-    VideoParameters *p_Vid = currSlice->p_Vid;
+	if (currSlice->listXsize[list_offset] <= 1)
+		return 0;
+	else
+	{
+		VideoParameters *p_Vid = currSlice->p_Vid;
 #if JCOST_CALC_SCALEUP
-    return ( ((distblk)lambda) *((distblk)(p_Vid->refbits[(ref)])) );
+		return ( ((distblk)lambda) *((distblk)(p_Vid->refbits[(ref)])) );
 #else
 #if (USE_RND_COST)    
-    return (rshift_rnd_sf((lambda) * (p_Vid->refbits[(ref)]), LAMBDA_ACCURACY_BITS));
+		return (rshift_rnd_sf((lambda) * (p_Vid->refbits[(ref)]), LAMBDA_ACCURACY_BITS));
 #else
-    return ((lambda *(p_Vid->refbits[(ref)]))>> LAMBDA_ACCURACY_BITS);
+		return ((lambda *(p_Vid->refbits[(ref)]))>> LAMBDA_ACCURACY_BITS);
 #endif
 #endif
-  }
+	}
 }
 
 static inline int GetMaxMVD(MotionVector *pMV, MotionVector *pRefMV)
 {
-  int i32MVx = iabs(pMV->mv_x - pRefMV->mv_x);
-  int i32MVy = iabs(pMV->mv_y - pRefMV->mv_y);
-  return imax(i32MVx, i32MVy);
+	int i32MVx = iabs(pMV->mv_x - pRefMV->mv_x);
+	int i32MVy = iabs(pMV->mv_y - pRefMV->mv_y);
+	return imax(i32MVx, i32MVy);
 }
 #endif
 

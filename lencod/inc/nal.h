@@ -1,18 +1,18 @@
 
 /*!
- **************************************************************************************
- * \file
- *    nal.h
- * \brief
- *    NAL related headers
- *
- * \date 4 Agust 2008
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *      - Karsten Suehring
- *      - Alexis Michael Tourapis         <alexismt@ieee.org> 
- ***************************************************************************************
- */
+**************************************************************************************
+* \file
+*    nal.h
+* \brief
+*    NAL related headers
+*
+* \date 4 Agust 2008
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*      - Karsten Suehring
+*      - Alexis Michael Tourapis         <alexismt@ieee.org> 
+***************************************************************************************
+*/
 
 
 #ifndef _NAL_H_

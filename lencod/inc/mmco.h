@@ -1,16 +1,16 @@
 /*!
- **************************************************************************************
- * \file
- *    mmco.h
- * \brief
- *    MMCO example operations.
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis                     <alexismt@ieee.org>
- *     - Athanasios Leontaris                        <aleon@dolby.com>
- ***************************************************************************************
- */
+**************************************************************************************
+* \file
+*    mmco.h
+* \brief
+*    MMCO example operations.
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis                     <alexismt@ieee.org>
+*     - Athanasios Leontaris                        <aleon@dolby.com>
+***************************************************************************************
+*/
 
 #ifndef _MMCO_H_
 #define _MMCO_H_

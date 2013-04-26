@@ -1,19 +1,19 @@
 /*!
- ***************************************************************************
- * \file
- *    me_distortion.h
- *
- * \author
- *    Alexis Michael Tourapis        <alexis.tourapis@dolby.com>
- *    Athanasios Leontaris           <aleon@dolby.com>
- *
- * \date
- *    11. August 2006
- *
- * \brief
- *    Headerfile for motion estimation distortion
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    me_distortion.h
+*
+* \author
+*    Alexis Michael Tourapis        <alexis.tourapis@dolby.com>
+*    Athanasios Leontaris           <aleon@dolby.com>
+*
+* \date
+*    11. August 2006
+*
+* \brief
+*    Headerfile for motion estimation distortion
+**************************************************************************
+*/
 
 #ifndef _ME_DISTORTION_H_
 #define _ME_DISTORTION_H_

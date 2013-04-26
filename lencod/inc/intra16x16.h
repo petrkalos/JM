@@ -1,18 +1,18 @@
 /*!
- ***************************************************************************
- *
- * \file intra16x16.h
- *
- * \brief
- *    prototypes of 16x16 intra prediction 
- *
- * \date
- *    26 September 2009
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *    Alexis Michael Tourapis
- **************************************************************************/
+***************************************************************************
+*
+* \file intra16x16.h
+*
+* \brief
+*    prototypes of 16x16 intra prediction 
+*
+* \date
+*    26 September 2009
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*    Alexis Michael Tourapis
+**************************************************************************/
 
 #ifndef _INTRA16X16_H_
 #define _INTRA16X16_H_

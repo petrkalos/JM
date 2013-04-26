@@ -1,17 +1,17 @@
 
 /*!
- **************************************************************************************
- * \file
- *    parset.h
- * \brief
- *    Picture and Sequence Parameter Sets, encoder operations
- *
- * \date 25 November 2002
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *      - Stephan Wenger        <stewe@cs.tu-berlin.de>
- ***************************************************************************************
- */
+**************************************************************************************
+* \file
+*    parset.h
+* \brief
+*    Picture and Sequence Parameter Sets, encoder operations
+*
+* \date 25 November 2002
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*      - Stephan Wenger        <stewe@cs.tu-berlin.de>
+***************************************************************************************
+*/
 
 
 #ifndef _PARSET_H_
@@ -34,10 +34,10 @@ extern NALU_t *GenerateSubsetSeq_parameter_set_NALU (VideoParameters *p_Vid);
 // The following are local helpers, but may come handy in the future, hence public
 extern void GenerateSequenceParameterSet(seq_parameter_set_rbsp_t *sps, VideoParameters *p_Vid, int SPS_id);
 extern void GeneratePictureParameterSet( pic_parameter_set_rbsp_t *pps, seq_parameter_set_rbsp_t *sps, 
-                                 VideoParameters *p_Vid,
-                                 InputParameters *p_Inp, int PPS_id,
-                                 int WeightedPrediction, int WeightedBiprediction,
-                                 int cb_qp_index_offset, int cr_qp_index_offset);
+	VideoParameters *p_Vid,
+	InputParameters *p_Inp, int PPS_id,
+	int WeightedPrediction, int WeightedBiprediction,
+	int cb_qp_index_offset, int cr_qp_index_offset);
 
 extern int  Scaling_List(short *scalingListinput, short *scalingList, int sizeOfScalingList, short *UseDefaultScalingMatrix, Bitstream *bitstream);
 #if (MVC_EXTENSION_ENABLE)

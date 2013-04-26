@@ -1,15 +1,15 @@
 /*!
- *************************************************************************************
- * \file mv_prediction.h
- *
- * \brief
- *    Declarations for Motion Vector Prediction
- *
- * \author
- *     Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>  
- *************************************************************************************
- */
+*************************************************************************************
+* \file mv_prediction.h
+*
+* \brief
+*    Declarations for Motion Vector Prediction
+*
+* \author
+*     Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>  
+*************************************************************************************
+*/
 
 #ifndef _MV_PREDICTION_H_
 #define _MV_PREDICTION_H_

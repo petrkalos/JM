@@ -1,12 +1,12 @@
 /*!
- ******************************************************************************************
- * \file
- *    me_distortion_otf.h
- *
- * \brief
- *    Headerfile for motion estimation distortion with subpel interpolation on-the-fly
- ******************************************************************************************
- */
+******************************************************************************************
+* \file
+*    me_distortion_otf.h
+*
+* \brief
+*    Headerfile for motion estimation distortion with subpel interpolation on-the-fly
+******************************************************************************************
+*/
 
 #ifndef _ME_DISTORTION_OTF_H_
 #define _ME_DISTORTION_OTF_H_

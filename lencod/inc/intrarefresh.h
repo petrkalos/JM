@@ -1,18 +1,18 @@
 
 /*!
- ***************************************************************************
- *
- * \file intrarefresh.h
- *
- * \brief
- *    Pseudo-Raqndom Intra macroblock refresh support
- *
- * \date
- *    16 June 2002
- *
- * \author
- *    Stephan Wenger   stewe@cs.tu-berlin.de
- **************************************************************************/
+***************************************************************************
+*
+* \file intrarefresh.h
+*
+* \brief
+*    Pseudo-Raqndom Intra macroblock refresh support
+*
+* \date
+*    16 June 2002
+*
+* \author
+*    Stephan Wenger   stewe@cs.tu-berlin.de
+**************************************************************************/
 
 #ifndef _INTRAREFRESH_H_
 #define _INTRAREFRESH_H_

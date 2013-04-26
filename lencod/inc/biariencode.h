@@ -1,23 +1,23 @@
 
 /*!
- ***************************************************************************
- * \file
- *    biariencode.h
- *
- * \brief
- *    Headerfile for binary arithmetic encoding routines
- *
- * \author
- *    - Detlev Marpe
- *    - Gabi Blaettermann
- *    - Gunnar Marten
- *
- *    Copyright (C) 2000 HEINRICH HERTZ INSTITUTE All Rights Reserved.
- *
- * \date
- *    21. Oct 2000
- **************************************************************************
- */
+***************************************************************************
+* \file
+*    biariencode.h
+*
+* \brief
+*    Headerfile for binary arithmetic encoding routines
+*
+* \author
+*    - Detlev Marpe
+*    - Gabi Blaettermann
+*    - Gunnar Marten
+*
+*    Copyright (C) 2000 HEINRICH HERTZ INSTITUTE All Rights Reserved.
+*
+* \date
+*    21. Oct 2000
+**************************************************************************
+*/
 
 
 #ifndef _BIARIENCOD_H_
@@ -25,9 +25,9 @@
 
 
 /************************************************************************
- * D e f i n i t i o n s
- ***********************************************************************
- */
+* D e f i n i t i o n s
+***********************************************************************
+*/
 
 // some definitions to increase the readability of the source code
 
@@ -62,7 +62,7 @@ extern void biari_encode_symbol_final(EncodingEnvironmentPtr eep, int symbol);
 */
 static inline int arienco_bits_written(EncodingEnvironmentPtr eep)
 {
-  return (((*eep->Ecodestrm_len) + eep->Epbuf + 1) << 3) + (eep->Echunks_outstanding * BITS_TO_LOAD) + BITS_TO_LOAD - eep->Ebits_to_go;
+	return (((*eep->Ecodestrm_len) + eep->Epbuf + 1) << 3) + (eep->Echunks_outstanding * BITS_TO_LOAD) + BITS_TO_LOAD - eep->Ebits_to_go;
 }
 
 #endif  // BIARIENCOD_H

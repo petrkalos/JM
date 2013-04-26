@@ -1,17 +1,17 @@
 /*!
- *************************************************************************************
- * \file typedefs.h
- *
- * \brief
- *    Common type definitions
- *    Currently only supports Windows and Linux operating systems. 
- *    Need to add support for other "older systems such as VAX, DECC, Unix Alpha etc
- *
- * \author
- *    Main contributors (see contributors.h for copyright, address and affiliation details)
- *     - Alexis Michael Tourapis         <alexismt@ieee.org>
- *************************************************************************************
- */
+*************************************************************************************
+* \file typedefs.h
+*
+* \brief
+*    Common type definitions
+*    Currently only supports Windows and Linux operating systems. 
+*    Need to add support for other "older systems such as VAX, DECC, Unix Alpha etc
+*
+* \author
+*    Main contributors (see contributors.h for copyright, address and affiliation details)
+*     - Alexis Michael Tourapis         <alexismt@ieee.org>
+*************************************************************************************
+*/
 
 #ifndef _TYPEDEFS_H_
 #define _TYPEDEFS_H_
@@ -44,8 +44,8 @@ typedef int32  transpel;
 #  define Boolean int
 #else
 typedef enum {
-  FALSE,
-  TRUE
+	FALSE,
+	TRUE
 } Boolean;
 #endif
 

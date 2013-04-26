@@ -1,12 +1,12 @@
 /*!
- *************************************************************************************
- * \file annexb.h
- *
- * \brief
- *    Annex B byte stream buffer handling.
- *
- *************************************************************************************
- */
+*************************************************************************************
+* \file annexb.h
+*
+* \brief
+*    Annex B byte stream buffer handling.
+*
+*************************************************************************************
+*/
 
 #ifndef _ANNEXB_H_
 #define _ANNEXB_H_
@@ -15,16 +15,16 @@
 
 typedef struct annex_b_struct
 {
-  int  BitStreamFile;                //!< the bit stream file
-  byte *iobuffer;
-  byte *iobufferread;
-  int bytesinbuffer;
-  int is_eof;
-  int iIOBufferSize;
+	int  BitStreamFile;                //!< the bit stream file
+	byte *iobuffer;
+	byte *iobufferread;
+	int bytesinbuffer;
+	int is_eof;
+	int iIOBufferSize;
 
-  int IsFirstByteStreamNALU;
-  int nextstartcodebytes;
-  byte *Buf;
+	int IsFirstByteStreamNALU;
+	int nextstartcodebytes;
+	byte *Buf;
 } ANNEXB_t;
 
 extern int  get_annex_b_NALU (VideoParameters *p_Vid, NALU_t *nalu, ANNEXB_t *annex_b);
