@@ -510,9 +510,9 @@ int encode_one_slice (VideoParameters *p_Vid, int SliceGroupId, int TotalCodedMB
 		else
 		{
 			p_Vid->masterQP = p_Vid->qp;
-			
+
 			currSlice->encode_one_macroblock (currMB);
-			
+
 			end_encode_one_macroblock(currMB);
 
 			write_macroblock (currMB, 1);

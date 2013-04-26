@@ -2533,7 +2533,7 @@ void decode_one_slice(Slice *currSlice)
 
 	fp_y = fopen(p_Vid->p_Inp->resfiley,"ab");
 	fp_uv = fopen(p_Vid->p_Inp->resfileuv,"ab");
-	
+
 	if(flag){
 		__int64 size;
 		char ans;
@@ -2551,7 +2551,7 @@ void decode_one_slice(Slice *currSlice)
 			}else{
 				exit(1);
 			}
-			
+
 		}
 		flag=0;
 	}
@@ -2569,10 +2569,10 @@ void decode_one_slice(Slice *currSlice)
 		// Get the syntax elements from the NAL
 		currSlice->read_one_macroblock(currMB);
 		decode_one_macroblock(currMB, currSlice->dec_picture);
-		
+
 		if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b){
 			int y,x;
-			
+
 			for(y=0;y<MB_BLOCK_SIZE;y++){
 				for(x=0;x<MB_BLOCK_SIZE;x++){
 					buff[0][currMB->pix_y+y][currMB->pix_x+x] = (short)currSlice->mb_rres[0][y][x];
@@ -2589,7 +2589,7 @@ void decode_one_slice(Slice *currSlice)
 				}
 			}
 
-		//Keep only I frames
+			//Keep only I frames
 		}else if(p_Vid->p_Inp->keep_i && is_intra_mb(currMB->mb_type)){
 			int y,x;
 			for(x=0;x<MB_BLOCK_SIZE;x+=dims){
@@ -2597,7 +2597,7 @@ void decode_one_slice(Slice *currSlice)
 					write_short(fp_y,&currSlice->mb_rres[0][currMB->pix_y+y][x],dims);
 				}
 			}
-			
+
 			for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
 				for(y=0;y<MB_BLOCK_SIZE/2;y++){
 					write_short(fp_uv,&currSlice->mb_rres[1][y][x],dims);
@@ -2613,7 +2613,7 @@ void decode_one_slice(Slice *currSlice)
 			cnt += MB_BLOCK_SIZE*MB_BLOCK_SIZE/dim+MB_BLOCK_SIZE*MB_BLOCK_SIZE/(dim*2);
 		}else if(p_Vid->p_Inp->keep_p && !is_intra_mb(currMB->mb_type)){
 			int y,x;
-			
+
 			for(x=0;x<MB_BLOCK_SIZE;x+=dims){
 				for(y=0;y<MB_BLOCK_SIZE;y++){
 					write_short(fp_y,&currSlice->mb_rres[0][y][x],dims);
@@ -2631,7 +2631,7 @@ void decode_one_slice(Slice *currSlice)
 					write_short(fp_uv,&currSlice->mb_rres[2][y][x],dims);
 				}
 			}
-			
+
 			cnt += MB_BLOCK_SIZE*MB_BLOCK_SIZE/dim+MB_BLOCK_SIZE*MB_BLOCK_SIZE/(dim*2);
 		}else if(p_Vid->p_Inp->keep_b){
 			int y,x,i,j;

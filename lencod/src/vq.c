@@ -161,18 +161,18 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 
 	for (i = 0; i < height; i+=dims){
 		for(j = 0; j< width; j+=dims){
-			
+
 			for(vi=0;vi<dims;vi++){
 				for(vj=0;vj<dims;vj++){
 					temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
 				}
 			}
-			
+
 
 			if(is_intra(currMB)) mode = 0;
 			else if(is_p(currMB) && currMB->b8x8[(int)subb].pdir==BI_PRED) mode = 1;
 			else mode = 2;
-			
+
 			if(mode==0){
 #ifdef FASTNN
 				min = fastNN(temp,rootI[pl],cbI[pl],dim,min_dist);
@@ -211,18 +211,18 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 				}
 				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
 			}
-			
+
 			subb+=0.5;
 		}
 	}
 }
 
 void write_vq(Macroblock *currMB){
-	
+
 	FILE *fp;
 	int pl,i,j,mode;
 	float subb;
-		
+
 	fp = fopen("vqindex.txt","a");
 	fprintf(fp,"%d\n",currMB->mbAddrX);
 	for(pl=0;pl<3;pl++){
@@ -237,14 +237,14 @@ void write_vq(Macroblock *currMB){
 					fprintf(fp,"%d@%5d ",mode,currMB->p_Slice->p_RDO->vqIndex[pl][i][j]);
 				}else if(i<2 && j<2){
 					fprintf(fp,"%d@%5d ",mode,currMB->p_Slice->p_RDO->vqIndex[pl][i][j]);
-					
+
 				}
 				subb+=0.5;
 			}
 		}
 		fprintf(fp,"\n");
 	}
-	
+
 
 	fclose(fp);
 }
