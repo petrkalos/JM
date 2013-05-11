@@ -69,7 +69,7 @@ void sample_reconstruct2 (imgpel **curImg, imgpel **mpr, int **mb_rres, int mb_y
 	int    *m7;
 	int i, j;
 
-	quantize_mb(mb_rres,width,height,mb_y,mb_x,pl,currMB,width);
+	quantize_mb(mb_rres,width,height,mb_y,mb_x,pl,currMB);
 
 	for (j = 0; j < height; j++)
 	{

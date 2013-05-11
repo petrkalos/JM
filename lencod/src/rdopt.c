@@ -14,6 +14,7 @@
 *    12. April 2001
 **************************************************************************
 */
+#include "vq.h"
 
 #include <math.h>
 #include <limits.h>
@@ -2060,6 +2061,14 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 	}
 	//--- reconstructed blocks ----
 	copy_image_data_16x16(p_RDO->rec_mb[0], &p_Vid->enc_picture->imgY[currMB->pix_y], 0, currMB->pix_x);
+
+	for(i=0;i<16;i++){
+		memcpy(p_RDO->rec_res[0][i],currMB->p_Slice->mb_rres[0][i],sizeof(int)*16);
+		memcpy(p_RDO->rec_res[1][i],currMB->p_Slice->mb_rres[1][i],sizeof(int)*16);
+		memcpy(p_RDO->rec_res[2][i],currMB->p_Slice->mb_rres[2][i],sizeof(int)*16);
+	}
+
+	
 
 	for(i=0;i<4;i++){
 		memset(p_RDO->vqIndex[0][i],-1,sizeof(int)*4);

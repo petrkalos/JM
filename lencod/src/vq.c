@@ -112,7 +112,7 @@ void init_codebooks(VideoParameters *vp){
 	}
 
 	//get_mem3Dint(&vp->vqIndex,3,MB_BLOCK_SIZE/dims,MB_BLOCK_SIZE/dims);
-	fclose(fopen("vqindex.txt","w"));
+	fclose(fopen("vqindex.bin","wb"));
 	fpYI = fopen(Inp->cbYI,"rb");
 	fpYP = fopen(Inp->cbYP,"rb");
 	fpYB = fopen(Inp->cbYB,"rb");
@@ -168,7 +168,6 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 				}
 			}
 
-
 			if(is_intra(currMB)) mode = 0;
 			else if(is_p(currMB) && currMB->b8x8[(int)subb].pdir==BI_PRED) mode = 1;
 			else mode = 2;
@@ -218,33 +217,38 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 }
 
 void write_vq(Macroblock *currMB){
-
+	static int cnt =0;
 	FILE *fp;
-	int pl,i,j,mode;
-	float subb;
-
-	fp = fopen("vqindex.txt","a");
-	fprintf(fp,"%d\n",currMB->mbAddrX);
-	for(pl=0;pl<3;pl++){
-		subb=0.0;
-		for(i=0;i<4;i++){
-			for(j=0;j<4;j++){
-				if(is_intra(currMB)) mode = 0;
-				else if(is_p(currMB) && currMB->b8x8[(int)subb].pdir==BI_PRED) mode = 1;
-				else mode = 2;
-
-				if(pl==0){
-					fprintf(fp,"%d@%5d ",mode,currMB->p_Slice->p_RDO->vqIndex[pl][i][j]);
-				}else if(i<2 && j<2){
-					fprintf(fp,"%d@%5d ",mode,currMB->p_Slice->p_RDO->vqIndex[pl][i][j]);
-
+	int i,j,vi,vj;
+	
+	fp = fopen("vqindex.bin","ab");
+	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
+	
+	/*for(i=0;i<4;i+=2){
+		for(j=0;j<4;j+=2){
+			for(vi=0;vi<2;vi++){
+				for(vj=0;vj<2;vj++){
+					fwrite(&currMB->p_Slice->p_RDO->vqIndex[0][i+vi][j+vj],sizeof(int),1,fp);
 				}
-				subb+=0.5;
 			}
 		}
-		fprintf(fp,"\n");
+	}*/
+
+	for(vi=0;vi<4;vi++){
+		for(vj=0;vj<4;vj++){
+			fwrite(&currMB->p_Slice->p_RDO->vqIndex[0][vi][vj],sizeof(int),1,fp);
+		}
 	}
 
-
+	for(vi=0;vi<2;vi++){
+		for(vj=0;vj<2;vj++){
+			fwrite(&currMB->p_Slice->p_RDO->vqIndex[1][vi][vj],sizeof(int),1,fp);
+		}
+	}
+	for(vi=0;vi<2;vi++){
+		for(vj=0;vj<2;vj++){
+			fwrite(&currMB->p_Slice->p_RDO->vqIndex[2][vi][vj],sizeof(int),1,fp);
+		}
+	}
 	fclose(fp);
 }

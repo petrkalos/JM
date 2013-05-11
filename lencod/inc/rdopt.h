@@ -36,6 +36,8 @@ typedef struct
 struct rdo_structure
 {
 	int vqIndex[3][4][4];
+	int rec_res[3][16][16];
+
 	RD_8x8DATA *tr4x4;
 	RD_8x8DATA *tr8x8;
 	imgpel ***rec8x8;
