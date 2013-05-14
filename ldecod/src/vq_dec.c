@@ -83,7 +83,10 @@ void init_codebooks(VideoParameters *vp){
 	}
 
 	fp_Index = fopen("vqindex.bin","rb");
-
+	if(fp_Index==NULL){
+		printf("Error opening vq indices \n");
+		exit(1);
+	}
 	pl = fread(vqindex,sizeof(int),1350*25,fp_Index);
 
 	fclose(fp_Index);
@@ -182,10 +185,12 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 								temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
 							}
 						}
-						idx = vqindex[addr*25+pos[uv]];
-						idx2 = find_min(cbI[pl],temp);
-						idx = idx*dim;
-						idx2 = idx2*dim;
+
+						t = pos[uv]+(mb_y/dims+i/dims)*4+(mb_x/dims+j/dims);
+
+						idx = vqindex[addr*25+t]*dim;
+						idx2 = find_min(cbI[pl],temp)*dim;
+						idx = idx2;
 
 						for(vi=0;vi<dims;vi++){
 							for(vj=0;vj<dims;vj++){
@@ -193,7 +198,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 							}
 						}
 					}
-					pos[uv]++;
+					//pos[uv]++;
 				}
 			}
 		}else{
@@ -222,6 +227,6 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 			}
 		}
 	}else{
-		printf("Indeces sync failed\n");
+		printf("Indices sync failed\n");
 	}
 }

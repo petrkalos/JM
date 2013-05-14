@@ -799,8 +799,5 @@
     <None Include="bin\my_cfgs\encoder_test.cfg">
       <Filter>my_cfgs</Filter>
     </None>
-    <None Include="bin\my_cfgs\encoder_test2.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
   </ItemGroup>
 </Project>

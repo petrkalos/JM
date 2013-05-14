@@ -180,7 +180,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 #endif
 				for(vi=0;vi<dims;vi++){
 					for(vj=0;vj<dims;vj++){
-						mb_rres[i+vi][mb_x+j+vj] = reverse_shift((int)(cbI[pl%2][min*dim+vi*dims+vj]));
+						mb_rres[i+vi][mb_x+j+vj] = reverse_shift((int)(cbI[pl][min*dim+vi*dims+vj]));
 					}
 				}
 				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
@@ -222,17 +222,8 @@ void write_vq(Macroblock *currMB){
 	int i,j,vi,vj;
 	
 	fp = fopen("vqindex.bin","ab");
+	check_file(fp);
 	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
-	
-	/*for(i=0;i<4;i+=2){
-		for(j=0;j<4;j+=2){
-			for(vi=0;vi<2;vi++){
-				for(vj=0;vj<2;vj++){
-					fwrite(&currMB->p_Slice->p_RDO->vqIndex[0][i+vi][j+vj],sizeof(int),1,fp);
-				}
-			}
-		}
-	}*/
 
 	for(vi=0;vi<4;vi++){
 		for(vj=0;vj<4;vj++){
