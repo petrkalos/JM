@@ -87,7 +87,7 @@ void init_codebooks(VideoParameters *vp){
 		printf("Error opening vq indices \n");
 		exit(1);
 	}
-	pl = fread(vqindex,sizeof(int),1350*25,fp_Index);
+	fread(vqindex,sizeof(int),1350*25,fp_Index);
 
 	fclose(fp_Index);
 
@@ -155,16 +155,11 @@ int find_min(float *cb,float *vector){
 }
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
-	static int addr = 0;
-	static int pos[3] = {1,17,21};
+	static const int pos[3] = {1,17,21};
 	int i,j,vi,vj,uv;
-
-	if(addr != currMB->mbAddrX){
-		addr = currMB->mbAddrX;
-		pos[0] = 1;
-		pos[1] = 17;
-		pos[2] = 21;
-	}
+	int addr;
+	
+	addr = currMB->mbAddrX;
 
 	if(pl==2){
 		uv = 2;
@@ -173,59 +168,32 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 		uv = pl;
 	}
 
-	if(vqindex[currMB->mbAddrX*25]==currMB->mbAddrX){
-		if(pl==0){
-			for (i = 0; i < height; i+=dims){
-				for(j = 0; j< width; j+=dims){
-					if(vqindex[addr*25+pos[uv]]!=-1){
-						int idx,idx2;
-						int t;
-						for(vi=0;vi<dims;vi++){
-							for(vj=0;vj<dims;vj++){
-								temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
-							}
-						}
-
-						t = pos[uv]+(mb_y/dims+i/dims)*4+(mb_x/dims+j/dims);
-
-						idx = vqindex[addr*25+t]*dim;
-						idx2 = find_min(cbI[pl],temp)*dim;
-						idx = idx2;
-
-						for(vi=0;vi<dims;vi++){
-							for(vj=0;vj<dims;vj++){
-								mb_rres[i+vi][mb_x+j+vj] = reverse_shift(cbI[pl][idx+vi*dims+vj]);
-							}
+	if(vqindex[addr*25]==addr){
+		
+		for (i = 0; i < height/(pl+1); i+=dims){
+			for(j = 0; j< width/(pl+1); j+=dims){
+				if(vqindex[addr*25+pos[uv]]!=-1){
+					int idx,t;
+					for(vi=0;vi<dims;vi++){
+						for(vj=0;vj<dims;vj++){
+							temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
 						}
 					}
-					//pos[uv]++;
-				}
-			}
-		}else{
-			for (i = 0; i < height/2; i+=dims){
-				for(j = 0; j< width/2; j+=dims){
-					if(vqindex[addr*25+pos[uv]]!=-1){
-						int idx,idx2;
+
+					t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
+
+					idx = vqindex[addr*25+t]*dim;
+					//idx = find_min(cbI[pl],temp)*dim;
 						
-						for(vi=0;vi<dims;vi++){
-							for(vj=0;vj<dims;vj++){
-								temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
-							}
-						}
-
-						idx = vqindex[addr*25+pos[uv]];
-						idx = idx*dim;
-
-						for(vi=0;vi<dims;vi++){
-							for(vj=0;vj<dims;vj++){
-								mb_rres[i+vi][mb_x+j+vj] = reverse_shift(cbI[pl][idx+vi*dims+vj]);
-							}
+					for(vi=0;vi<dims;vi++){
+						for(vj=0;vj<dims;vj++){
+							mb_rres[i+vi][mb_x+j+vj] = reverse_shift(cbI[pl][idx+vi*dims+vj]);
 						}
 					}
-					pos[uv]++;
 				}
 			}
 		}
+		
 	}else{
 		printf("Indices sync failed\n");
 	}

@@ -13,6 +13,9 @@
     <Filter Include="Project Source Files">
       <UniqueIdentifier>{d7e54672-93ef-4e24-8c3d-5449633bb30e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="my_cfgs">
+      <UniqueIdentifier>{627d03b7-4278-404d-811e-41b56466f0ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lcommon\inc\config_common.h">
@@ -430,10 +433,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\my_cfgs\decoder_i.cfg" />
-    <None Include="bin\my_cfgs\decoder_p.cfg" />
-    <None Include="bin\my_cfgs\decoder_b.cfg" />
-    <None Include="bin\my_cfgs\decoder_test.cfg" />
-    <None Include="bin\my_cfgs\decoder_b_f.cfg" />
+    <None Include="bin\my_cfgs\decoder_test.cfg">
+      <Filter>my_cfgs</Filter>
+    </None>
+    <None Include="bin\my_cfgs\decoder_p.cfg">
+      <Filter>my_cfgs</Filter>
+    </None>
+    <None Include="bin\my_cfgs\decoder_i.cfg">
+      <Filter>my_cfgs</Filter>
+    </None>
+    <None Include="bin\my_cfgs\decoder_b.cfg">
+      <Filter>my_cfgs</Filter>
+    </None>
   </ItemGroup>
 </Project>

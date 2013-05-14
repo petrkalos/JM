@@ -140,6 +140,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <DisableSpecificWarnings>4244</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -238,6 +239,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CallingConvention>Cdecl</CallingConvention>
       <CompileAs>Default</CompileAs>
+      <DisableSpecificWarnings>4244</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -400,7 +402,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\my_cfgs\decoder_b.cfg" />
-    <None Include="bin\my_cfgs\decoder_b_f.cfg" />
     <None Include="bin\my_cfgs\decoder_i.cfg" />
     <None Include="bin\my_cfgs\decoder_p.cfg" />
     <None Include="bin\my_cfgs\decoder_test.cfg" />

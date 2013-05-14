@@ -217,29 +217,28 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 }
 
 void write_vq(Macroblock *currMB){
-	static int cnt =0;
 	FILE *fp;
-	int i,j,vi,vj;
-	
+	int i,pl;
+	struct rdo_structure    *p_RDO;
+
+	p_RDO = currMB->p_Slice->p_RDO;
+
 	fp = fopen("vqindex.bin","ab");
 	check_file(fp);
 	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
 
-	for(vi=0;vi<4;vi++){
-		for(vj=0;vj<4;vj++){
-			fwrite(&currMB->p_Slice->p_RDO->vqIndex[0][vi][vj],sizeof(int),1,fp);
-		}
+
+	pl=0;
+	for(i=0;i<4;i++){
+		fwrite(&p_RDO->vqIndex[pl][i],sizeof(int),4,fp);
 	}
 
-	for(vi=0;vi<2;vi++){
-		for(vj=0;vj<2;vj++){
-			fwrite(&currMB->p_Slice->p_RDO->vqIndex[1][vi][vj],sizeof(int),1,fp);
+	pl++;
+	for(;pl<3;pl++){
+		for(i=0;i<2;i++){
+			fwrite(&p_RDO->vqIndex[pl][i],sizeof(int),2,fp);
 		}
 	}
-	for(vi=0;vi<2;vi++){
-		for(vj=0;vj<2;vj++){
-			fwrite(&currMB->p_Slice->p_RDO->vqIndex[2][vi][vj],sizeof(int),1,fp);
-		}
-	}
+	
 	fclose(fp);
 }

@@ -515,12 +515,13 @@ int encode_one_slice (VideoParameters *p_Vid, int SliceGroupId, int TotalCodedMB
 
 			end_encode_one_macroblock(currMB);
 
-			write_macroblock (currMB, 1);
-
 			write_vq(currMB);
+
+			write_macroblock (currMB, 1);
 		}
 
 		end_macroblock (currMB, &end_of_slice, &recode_macroblock);
+		
 		currMB->prev_recode_mb = recode_macroblock;
 		//       printf ("encode_one_slice: mb %d,  slice %d,   bitbuf bytepos %d EOS %d\n",
 		//       p_Vid->current_mb_nr, p_Vid->current_slice_nr,
