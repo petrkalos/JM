@@ -9,29 +9,27 @@
 #include "global.h"
 #include "mbuffer.h"
 #include "memalloc.h"
-
+#define FASTNN
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
 
 float **cbI;
 float **cbB;
 float **cbP;
-
-struct node *rootI[2];
-struct node *rootP[2];
-struct node *rootB[2];
-struct context *storI[2];
-struct context *storP[2];
-struct context *storB[2];
-
 float *temp;
+
+#ifdef FASTNN
+	struct node *rootI[2];
+	struct node *rootP[2];
+	struct node *rootB[2];
+	struct context *storI[2];
+	struct context *storP[2];
+	struct context *storB[2];
+	float min_dist[2];
+#endif
 
 int dim;
 int dims;
 int cblen;
-
-float min_dist[2];
-
-#define FASTNN
 
 void check_file(FILE *fp){
 	if(fp==NULL){
@@ -132,12 +130,12 @@ void init_codebooks(VideoParameters *vp){
 	fclose(fpYI);fclose(fpYB);fclose(fpYP);fclose(fpUVI);fclose(fpUVB);fclose(fpUVP);
 
 	for(pl=0;pl<cblen*dim;pl++){
-		cbI[0][pl] = (float)round(cbI[0][pl]);
-		cbI[1][pl] = (float)round(cbI[1][pl]);
-		cbP[0][pl] = (float)round(cbP[0][pl]);
-		cbP[1][pl] = (float)round(cbP[1][pl]);
-		cbB[0][pl] = (float)round(cbB[0][pl]);
-		cbB[1][pl] = (float)round(cbB[1][pl]);
+		cbI[0][pl] = reverse_shift((int)round(cbI[0][pl]));
+		cbI[1][pl] = reverse_shift((int)round(cbI[1][pl]));
+		cbP[0][pl] = reverse_shift((int)round(cbP[0][pl]));
+		cbP[1][pl] = reverse_shift((int)round(cbP[1][pl]));
+		cbB[0][pl] = reverse_shift((int)round(cbB[0][pl]));
+		cbB[1][pl] = reverse_shift((int)round(cbB[1][pl]));
 	}
 #ifdef FASTNN
 	initNN(&rootI[0],&storI[0],dim,cblen,cbI[0]);
@@ -164,7 +162,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 
 			for(vi=0;vi<dims;vi++){
 				for(vj=0;vj<dims;vj++){
-					temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
+					temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
 				}
 			}
 
@@ -180,7 +178,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 #endif
 				for(vi=0;vi<dims;vi++){
 					for(vj=0;vj<dims;vj++){
-						mb_rres[i+vi][mb_x+j+vj] = reverse_shift((int)(cbI[pl][min*dim+vi*dims+vj]));
+						mb_rres[i+vi][mb_x+j+vj] = ((int)(cbI[pl][min*dim+vi*dims+vj]));
 					}
 				}
 				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
