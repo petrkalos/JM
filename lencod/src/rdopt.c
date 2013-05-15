@@ -2077,8 +2077,8 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 	for(i=0;i<4;i++){
 		memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
 		if(i<2){
-			//memcpy(p_RDO->vqIndex[1][i],currMB->vqIndex[1][i],2*sizeof(int));
-			//memcpy(p_RDO->vqIndex[2][i],currMB->vqIndex[2][i],2*sizeof(int));
+			memcpy(p_RDO->vqIndex[1][i],currMB->vqIndex[1][i],2*sizeof(int));
+			memcpy(p_RDO->vqIndex[2][i],currMB->vqIndex[2][i],2*sizeof(int));
 		}
 	}
 

@@ -111,6 +111,7 @@ float distance2_c(float *vector1, float *vector2, int dim)
 	}
 	return (float) sum;
 }
+
 float distance2_sse2(float *vector1, float *vector2, int dim)
 {
 	int i;
@@ -169,7 +170,6 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 	}
 
 	if(vqindex[addr*25]==addr){
-		
 		for (i = 0; i < height/(pl+1); i+=dims){
 			for(j = 0; j< width/(pl+1); j+=dims){
 				if(vqindex[addr*25+pos[uv]]!=-1){
