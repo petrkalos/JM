@@ -700,8 +700,6 @@ int residual_transform_quant_luma_4x4(Macroblock *currMB, ColorPlane pl, int blo
 
 			// generate final block
 			sample_reconstruct2 (&img_enc[currMB->pix_y + block_y], &mb_pred[block_y], &mb_rres[block_y], block_y,block_x, currMB->pix_x + block_x, BLOCK_SIZE, BLOCK_SIZE, max_imgpel_value, DQ_BITS,0,currMB);
-
-			forward4x4(mb_rres, currSlice->tblk16x16, block_y, block_x);
 		}
 		else // if (nonzero) => No transformed residual. Just use prediction.
 		{
