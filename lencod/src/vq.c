@@ -12,18 +12,14 @@
 #define FASTNN
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
 
-float **cbI;
-float **cbB;
-float **cbP;
+
+//cb[mode={I,P,B}][plane={Y,UV}][codebookdim]
+float **cb[3];
 float *temp;
 
 #ifdef FASTNN
-	struct node *rootI[2];
-	struct node *rootP[2];
-	struct node *rootB[2];
-	struct context *storI[2];
-	struct context *storP[2];
-	struct context *storB[2];
+	struct node *root[3][2];
+	struct context *stor[3][2];
 	float min_dist[2];
 #endif
 
@@ -86,7 +82,7 @@ int reverse_shift(int x){
 }
 
 void init_codebooks(VideoParameters *vp){
-	int pl,size;
+	int i,pl,size,mode;
 	InputParameters *Inp;
 	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP;
 
@@ -99,17 +95,16 @@ void init_codebooks(VideoParameters *vp){
 
 	temp = (float *)_aligned_malloc(sizeof(float)*dim,16);
 
-	cbI = (float **)malloc(sizeof(float *)*2);
-	cbB = (float **)malloc(sizeof(float *)*2);
-	cbP = (float **)malloc(sizeof(float *)*2);
-
-	for(pl=0;pl<2;pl++){
-		cbI[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
-		cbB[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
-		cbP[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
+	for(mode=0;mode<3;mode++){
+		cb[mode] = (float **)malloc(sizeof(float *)*2);
 	}
 
-	//get_mem3Dint(&vp->vqIndex,3,MB_BLOCK_SIZE/dims,MB_BLOCK_SIZE/dims);
+	for(mode=0;mode<3;mode++){
+		for(pl=0;pl<2;pl++){
+			cb[mode][pl] = (float *)_aligned_malloc(size*sizeof(float),16);
+		}
+	}
+
 	fclose(fopen("vqindex.bin","wb"));
 	fpYI = fopen(Inp->cbYI,"rb");
 	fpYP = fopen(Inp->cbYP,"rb");
@@ -120,30 +115,30 @@ void init_codebooks(VideoParameters *vp){
 
 	check_file(fpYI);check_file(fpYB);check_file(fpYP);check_file(fpUVI);check_file(fpUVB);check_file(fpUVP);
 
-	fread(cbI[0],sizeof(float),size,fpYI);
-	fread(cbI[1],sizeof(float),size,fpUVI);
-	fread(cbP[0],sizeof(float),size,fpYP);
-	fread(cbP[1],sizeof(float),size,fpUVP);
-	fread(cbB[0],sizeof(float),size,fpYB);
-	fread(cbB[1],sizeof(float),size,fpUVB);
+
+	fread(cb[0][0],sizeof(float),size,fpYI);
+	fread(cb[0][1],sizeof(float),size,fpUVI);
+	fread(cb[1][0],sizeof(float),size,fpYP);
+	fread(cb[1][1],sizeof(float),size,fpUVP);
+	fread(cb[2][0],sizeof(float),size,fpYB);
+	fread(cb[2][1],sizeof(float),size,fpUVB);
 
 	fclose(fpYI);fclose(fpYB);fclose(fpYP);fclose(fpUVI);fclose(fpUVB);fclose(fpUVP);
 
-	for(pl=0;pl<cblen*dim;pl++){
-		cbI[0][pl] = reverse_shift((int)round(cbI[0][pl]));
-		cbI[1][pl] = reverse_shift((int)round(cbI[1][pl]));
-		cbP[0][pl] = reverse_shift((int)round(cbP[0][pl]));
-		cbP[1][pl] = reverse_shift((int)round(cbP[1][pl]));
-		cbB[0][pl] = reverse_shift((int)round(cbB[0][pl]));
-		cbB[1][pl] = reverse_shift((int)round(cbB[1][pl]));
+	for(mode=0;mode<3;mode++){
+		for(pl=0;pl<2;pl++){
+			for(i=0;i<cblen*dim;i++){
+				cb[mode][pl][i] = reverse_shift((int)round(cb[mode][pl][i]));
+			}
+		}
 	}
+
 #ifdef FASTNN
-	initNN(&rootI[0],&storI[0],dim,cblen,cbI[0]);
-	initNN(&rootI[1],&storI[1],dim,cblen,cbI[1]);
-	initNN(&rootP[0],&storP[0],dim,cblen,cbP[0]);
-	initNN(&rootP[1],&storP[1],dim,cblen,cbP[1]);
-	initNN(&rootB[0],&storB[0],dim,cblen,cbB[0]);
-	initNN(&rootB[1],&storB[1],dim,cblen,cbB[1]);	
+	for(mode=0;mode<3;mode++){
+		for(pl=0;pl<2;pl++){
+			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
+		}
+	}
 #endif
 }
 
@@ -156,7 +151,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 		uv = pl;
 		pl = 1;
 	}
-
+	
 	for (i = 0; i < height; i+=dims){
 		for(j = 0; j< width; j+=dims){
 
@@ -170,45 +165,20 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 			else if(is_p(currMB) && currMB->b8x8[(int)subb].pdir==BI_PRED) mode = 1;
 			else mode = 2;
 
-			if(mode==0){
 #ifdef FASTNN
-				min = fastNN(temp,rootI[pl],cbI[pl],dim,min_dist);
+			min = fastNN(temp,root[mode][pl],cb[mode][pl],dim,min_dist);
 #else
-				min = find_min(cbI[pl],temp);
+			min = find_min(cbI[pl],temp);
 #endif
-				for(vi=0;vi<dims;vi++){
-					for(vj=0;vj<dims;vj++){
-						mb_rres[i+vi][mb_x+j+vj] = ((int)(cbI[pl][min*dim+vi*dims+vj]));
-					}
-				}
-				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
 
-			}else if(mode==1){
-#ifdef FASTNN
-				min = fastNN(temp,rootI[pl],cbI[pl],dim,min_dist);
-#else
-				min = find_min(cbI[pl],temp);
-#endif
-				for(vi=0;vi<dims;vi++){
-					for(vj=0;vj<dims;vj++){
-						mb_rres[i+vi][mb_x+j+vj] = reverse_shift((int)(cbB[pl][min*dim+vi*dims+vj]));
-					}
+			for(vi=0;vi<dims;vi++){
+				for(vj=0;vj<dims;vj++){
+					mb_rres[i+vi][mb_x+j+vj] = ((int)(cb[mode][pl][min*dim+vi*dims+vj]));
 				}
-				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
-			}else if(mode==2){
-#ifdef FASTNN
-				min = fastNN(temp,rootI[pl],cbI[pl],dim,min_dist);
-#else
-				min = find_min(cbI[pl],temp);
-#endif
-				for(vi=0;vi<dims;vi++){
-					for(vj=0;vj<dims;vj++){
-						mb_rres[i+vi][mb_x+j+vj] = reverse_shift((int)(cbP[pl][min*dim+vi*dims+vj]));
-					}
-				}
-				currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
 			}
 
+			currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
+			
 			subb+=0.5;
 		}
 	}

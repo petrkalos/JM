@@ -8,9 +8,7 @@
 #include "mbuffer.h"
 #include "memalloc.h"
 
-float **cbI;
-float **cbB;
-float **cbP;
+float **cb[3];
 
 float *temp;
 
@@ -24,15 +22,24 @@ int *vqindex;
 
 void check_file(FILE *fp){
 	if(fp==NULL){
-		printf("file open error\n\n\n");
+		printf("Error opening file\n");
+		exit(1);
+	}
+
+	if(ferror(fp)!=0){
+		printf("File didn't opened correctly %d\n\n\n",strerror(ferror(fp)));
 		exit(1);
 	}
 }
 
+int reverse_shift(int x){
+	return 64*x-32;
+}
+
 void init_codebooks(VideoParameters *vp){
-	int pl,size;
+	int i,pl,size,mode;
 	InputParameters *Inp;
-	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP,*fp_Index;
+	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP,*fpIndex;
 
 	Inp = vp->p_Inp;
 
@@ -43,16 +50,14 @@ void init_codebooks(VideoParameters *vp){
 
 	temp = (float *)_aligned_malloc(sizeof(float)*dim,16);
 
-	vqindex = (int *)malloc(sizeof(int *)*1350*21);
+	for(mode=0;mode<3;mode++){
+		cb[mode] = (float **)malloc(sizeof(float *)*2);
+	}
 
-	cbI = (float **)malloc(sizeof(float *)*2);
-	cbB = (float **)malloc(sizeof(float *)*2);
-	cbP = (float **)malloc(sizeof(float *)*2);
-
-	for(pl=0;pl<2;pl++){
-		cbI[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
-		cbB[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
-		cbP[pl] = (float *)_aligned_malloc(size*sizeof(float),16);
+	for(mode=0;mode<3;mode++){
+		for(pl=0;pl<2;pl++){
+			cb[mode][pl] = (float *)_aligned_malloc(size*sizeof(float),16);
+		}
 	}
 
 	fpYI = fopen(Inp->cbYI,"rb");
@@ -64,37 +69,31 @@ void init_codebooks(VideoParameters *vp){
 
 	check_file(fpYI);check_file(fpYB);check_file(fpYP);check_file(fpUVI);check_file(fpUVB);check_file(fpUVP);
 
-	fread(cbI[0],sizeof(float),size,fpYI);
-	fread(cbI[1],sizeof(float),size,fpUVI);
-	fread(cbP[0],sizeof(float),size,fpYP);
-	fread(cbP[1],sizeof(float),size,fpUVP);
-	fread(cbB[0],sizeof(float),size,fpYB);
-	fread(cbB[1],sizeof(float),size,fpUVB);
+
+	fread(cb[0][0],sizeof(float),size,fpYI);
+	fread(cb[0][1],sizeof(float),size,fpUVI);
+	fread(cb[1][0],sizeof(float),size,fpYP);
+	fread(cb[1][1],sizeof(float),size,fpUVP);
+	fread(cb[2][0],sizeof(float),size,fpYB);
+	fread(cb[2][1],sizeof(float),size,fpUVB);
 
 	fclose(fpYI);fclose(fpYB);fclose(fpYP);fclose(fpUVI);fclose(fpUVB);fclose(fpUVP);
 
-	for(pl=0;pl<cblen*dim;pl++){
-		cbI[0][pl] = (float)round(cbI[0][pl]);
-		cbI[1][pl] = (float)round(cbI[1][pl]);
-		cbP[0][pl] = (float)round(cbP[0][pl]);
-		cbP[1][pl] = (float)round(cbP[1][pl]);
-		cbB[0][pl] = (float)round(cbB[0][pl]);
-		cbB[1][pl] = (float)round(cbB[1][pl]);
+	for(mode=0;mode<3;mode++){
+		for(pl=0;pl<2;pl++){
+			for(i=0;i<cblen*dim;i++){
+				cb[mode][pl][i] = reverse_shift((int)round(cb[mode][pl][i]));
+			}
+		}
 	}
 
-	fp_Index = fopen("vqindex.bin","rb");
-	if(fp_Index==NULL){
-		printf("Error opening vq indices \n");
-		exit(1);
-	}
-	fread(vqindex,sizeof(int),1350*25,fp_Index);
+	vqindex = (int *)malloc(sizeof(int *)*1350*21);
+	fpIndex = fopen("vqindex.bin","rb");
+	check_file(fpIndex);
+	fread(vqindex,sizeof(int),1350*25,fpIndex);
 
-	fclose(fp_Index);
+	fclose(fpIndex);
 
-}
-
-int reverse_shift(int x){
-	return 64*x-32;
 }
 
 float distance2_c(float *vector1, float *vector2, int dim)
@@ -157,7 +156,7 @@ int find_min(float *cb,float *vector){
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	static const int pos[3] = {1,17,21};
-	int i,j,vi,vj,uv;
+	int i,j,vi,vj,uv,mode=0;
 	int addr;
 	
 	addr = currMB->mbAddrX;
@@ -176,18 +175,18 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 					int idx,t;
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
-							temp[vi*dims+vj] = (float)rshift_rnd_sf(mb_rres[i+vi][mb_x+j+vj],6);
+							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj],6);
 						}
 					}
 
 					t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
 
 					idx = vqindex[addr*25+t]*dim;
-					//idx = find_min(cbI[pl],temp)*dim;
+					//idx = find_min(cb[mode][pl],temp)*dim;
 						
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
-							mb_rres[i+vi][mb_x+j+vj] = reverse_shift(cbI[pl][idx+vi*dims+vj]);
+							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);
 						}
 					}
 				}
