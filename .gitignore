@@ -4,20 +4,11 @@
 
 #My ignore
 
-*.yuv
-*.264
 */Debug*
 */Release*
 
-bin/*.cfg
-bin/training
-bin/*.dat
-bin/*.txt
-bin/HM-like
-bin/VQEG
-bin/*.exe
-bin/*.bsc
-bin/*.dec
+bin/*
+!*bin/yuv/
 
 
 
@@ -32,7 +23,7 @@ bin/*.dec
 [Rr]elease/*
 x64/
 build/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 
 # MSTest test Results
