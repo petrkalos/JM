@@ -76,7 +76,6 @@ void sample_reconstruct2 (imgpel **curImg, imgpel **mpr, int **mb_rres, int mb_y
 		imgPred = &mpr[j][mb_x];
 		m7 = &mb_rres[j][mb_x];
 		for (i=0;i<width;i++){
-			//*m7 = 0;
 			*imgOrg++ = (imgpel) iClip1( max_imgpel_value, rshift_rnd_sf(*m7++, dq_bits) + *imgPred++);
 		}
 	}

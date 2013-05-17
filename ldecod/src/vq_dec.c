@@ -8,6 +8,16 @@
 #include "mbuffer.h"
 #include "memalloc.h"
 
+#include "fastnn.h"
+
+#define FASTNN
+
+#ifdef FASTNN
+	struct node *root[3][2];
+	struct context *stor[3][2];
+	float min_dist[2];
+#endif
+
 float **cb[3];
 
 float *temp;
@@ -19,6 +29,31 @@ int cblen;
 int *vqindex;
 
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
+
+float distance2_sse2(float *vector1, float *vector2, int dim)
+{
+	int i;
+	float sum;
+	__m128 xmm0,xmm1,xmm2;
+
+	xmm0 = _mm_setzero_ps();
+	for(i=dim;i>0;i-=4)
+	{
+		xmm1 = _mm_load_ps ((const float *) (vector1+0));
+		xmm2 = _mm_load_ps ((const float *) (vector2+0));
+		xmm1 = _mm_sub_ps (xmm1, xmm2);
+		xmm1 = _mm_mul_ps (xmm1, xmm1);
+		xmm0 = _mm_add_ps (xmm0, xmm1);
+		vector1 += 4;
+		vector2 += 4;
+	}
+	xmm1 = _mm_shuffle_ps (xmm0, xmm0, 0xEE);
+	xmm0 = _mm_add_ps (xmm0, xmm1);
+	xmm1 = _mm_shuffle_ps (xmm0, xmm0, 0x55);
+	xmm0 = _mm_add_ps (xmm0, xmm1);
+	_mm_store_ss (&sum, xmm0);
+	return sum;
+}
 
 void check_file(FILE *fp){
 	if(fp==NULL){
@@ -87,6 +122,14 @@ void init_codebooks(VideoParameters *vp){
 		}
 	}
 
+#ifdef FASTNN
+	for(mode=0;mode<1;mode++){
+		for(pl=0;pl<2;pl++){
+			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
+		}
+	}
+#endif
+
 	vqindex = (int *)malloc(sizeof(int *)*1350*21);
 	fpIndex = fopen("vqindex.bin","rb");
 	check_file(fpIndex);
@@ -96,67 +139,10 @@ void init_codebooks(VideoParameters *vp){
 
 }
 
-float distance2_c(float *vector1, float *vector2, int dim)
-{
-	int i;
-	double sum;
-	float diff;
-
-	sum = 0.0;
-	for(i=0;i<dim;i++)
-	{
-		diff = vector1[i] - vector2[i];
-		sum += diff*diff;
-	}
-	return (float) sum;
-}
-
-float distance2_sse2(float *vector1, float *vector2, int dim)
-{
-	int i;
-	float sum;
-	__m128 xmm0,xmm1,xmm2;
-	
-	xmm0 = _mm_setzero_ps();
-	for(i=dim;i>0;i-=4)
-	{
-		xmm1 = _mm_load_ps ((const float *) (vector1+0));
-		xmm2 = _mm_load_ps ((const float *) (vector2+0));
-		xmm1 = _mm_sub_ps (xmm1, xmm2);
-		xmm1 = _mm_mul_ps (xmm1, xmm1);
-		xmm0 = _mm_add_ps (xmm0, xmm1);
-		vector1 += 4;
-		vector2 += 4;
-	}
-	xmm1 = _mm_shuffle_ps (xmm0, xmm0, 0xEE);
-	xmm0 = _mm_add_ps (xmm0, xmm1);
-	xmm1 = _mm_shuffle_ps (xmm0, xmm0, 0x55);
-	xmm0 = _mm_add_ps (xmm0, xmm1);
-	_mm_store_ss (&sum, xmm0);
-	return sum;
-}
-
-int find_min(float *cb,float *vector){
-	int i,min_ind;
-	float min_dist,dist;
-	min_dist = FLT_MAX;
-	min_ind = -1;
-
-	for(i=0;i<cblen;i++){
-		dist = distance2_sse2(&cb[i*dim],vector,dim);
-		if(dist<min_dist){
-			min_ind = i;
-			min_dist = dist;
-		}
-	}
-
-	//printf("Distance %lf\n",sqrt(min_dist)/dim);
-	return min_ind;
-}
-
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	static const int pos[3] = {1,17,21};
 	int i,j,vi,vj,uv,mode=0;
+	float dist,dist2;
 	int addr;
 	
 	addr = currMB->mbAddrX;
@@ -172,18 +158,20 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 		for (i = 0; i < height/(pl+1); i+=dims){
 			for(j = 0; j< width/(pl+1); j+=dims){
 				if(vqindex[addr*25+pos[uv]]!=-1){
-					int idx,t;
+					int idx,idx2,t;
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
-							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj],6);
+							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
 						}
 					}
 
 					t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
 
 					idx = vqindex[addr*25+t]*dim;
-					//idx = find_min(cb[mode][pl],temp)*dim;
-						
+					dist = sqrt(distance2_sse2(&cb[mode][pl][idx],temp,16))/dim;
+#ifdef FASTNN
+					idx2 = fastNN(temp,root[mode][pl],cb[mode][pl],dim,min_dist)*dim;
+#endif		
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
 							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);

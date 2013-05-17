@@ -2062,7 +2062,7 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 	//--- reconstructed blocks ----
 	copy_image_data_16x16(p_RDO->rec_mb[0], &p_Vid->enc_picture->imgY[currMB->pix_y], 0, currMB->pix_x);
 
-	for(i=0;i<16;i++){
+	/*for(i=0;i<16;i++){
 		memcpy(p_RDO->rec_res[0][i],currMB->p_Slice->mb_rres[0][i],sizeof(int)*16);
 		memcpy(p_RDO->rec_res[1][i],currMB->p_Slice->mb_rres[1][i],sizeof(int)*16);
 		memcpy(p_RDO->rec_res[2][i],currMB->p_Slice->mb_rres[2][i],sizeof(int)*16);
@@ -2074,8 +2074,11 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 		memset(p_RDO->vqIndex[2][i],-1,sizeof(int)*4);
 	}
 
+	*/
+	
 	for(i=0;i<4;i++){
-		memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
+		if(currMB->mb_type == I4MB) memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex4x4[i],4*sizeof(int));
+		else memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
 		if(i<2){
 			memcpy(p_RDO->vqIndex[1][i],currMB->vqIndex[1][i],2*sizeof(int));
 			memcpy(p_RDO->vqIndex[2][i],currMB->vqIndex[2][i],2*sizeof(int));

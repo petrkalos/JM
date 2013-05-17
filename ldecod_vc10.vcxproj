@@ -304,6 +304,7 @@
     <ClInclude Include="ldecod\inc\erc_do.h" />
     <ClInclude Include="ldecod\inc\erc_globals.h" />
     <ClInclude Include="ldecod\inc\errorconcealment.h" />
+    <ClInclude Include="ldecod\inc\fastnn.h" />
     <ClInclude Include="ldecod\inc\filehandle.h" />
     <ClInclude Include="ldecod\inc\fmo.h" />
     <ClInclude Include="ldecod\inc\global.h" />
@@ -358,6 +359,7 @@
     <ClCompile Include="ldecod\src\erc_do_i.c" />
     <ClCompile Include="ldecod\src\erc_do_p.c" />
     <ClCompile Include="ldecod\src\errorconcealment.c" />
+    <ClCompile Include="ldecod\src\fastnn.c" />
     <ClCompile Include="ldecod\src\filehandle.c" />
     <ClCompile Include="ldecod\src\fmo.c" />
     <ClCompile Include="ldecod\src\header.c" />

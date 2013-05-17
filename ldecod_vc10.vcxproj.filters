@@ -228,6 +228,9 @@
     <ClInclude Include="ldecod\inc\vq_dec.h">
       <Filter>Project Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ldecod\inc\fastnn.h">
+      <Filter>Project Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lcommon\src\config_common.c">
@@ -429,6 +432,9 @@
       <Filter>Project Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ldecod\src\vq_dec.c">
+      <Filter>Project Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ldecod\src\fastnn.c">
       <Filter>Project Source Files</Filter>
     </ClCompile>
   </ItemGroup>

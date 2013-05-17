@@ -134,7 +134,7 @@ void init_codebooks(VideoParameters *vp){
 	}
 
 #ifdef FASTNN
-	for(mode=0;mode<3;mode++){
+	for(mode=0;mode<1;mode++){
 		for(pl=0;pl<2;pl++){
 			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
 		}
