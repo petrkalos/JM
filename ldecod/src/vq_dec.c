@@ -206,8 +206,6 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);
 						}
 					}
-				}else{
-					printf("no vq for block %d\n",currMB->mbAddrX);
 				}
 			}
 		}

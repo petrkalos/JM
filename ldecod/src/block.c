@@ -775,8 +775,11 @@ void iTransform(Macroblock *currMB, ColorPlane pl, int smb)
 						itrans4x4(currMB, uv, *x_pos++, *y_pos++);
 						itrans4x4(currMB, uv, *x_pos  , *y_pos  );
 					}
-					sample_reconstruct2 (mb_rec, currSlice->mb_pred[uv], currSlice->mb_rres[uv], 0, 0, 0,
-						p_Vid->mb_size[1][0], p_Vid->mb_size[1][1], currMB->p_Vid->max_pel_value_comp[uv], DQ_BITS,pl,currMB);
+					//sample_reconstruct2 (mb_rec, currSlice->mb_pred[uv], currSlice->mb_rres[uv], 0, 0, 0,
+						//p_Vid->mb_size[1][0], p_Vid->mb_size[1][1], currMB->p_Vid->max_pel_value_comp[uv], DQ_BITS,pl,currMB);
+
+					sample_reconstruct (mb_rec, currSlice->mb_pred[uv], currSlice->mb_rres[uv], 0, 0, 
+						p_Vid->mb_size[1][0], p_Vid->mb_size[1][1], currMB->p_Vid->max_pel_value_comp[uv], DQ_BITS);
 				}
 				else
 				{
