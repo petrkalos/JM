@@ -704,11 +704,13 @@ int residual_transform_quant_luma_4x4(Macroblock *currMB, ColorPlane pl, int blo
 		else // if (nonzero) => No transformed residual. Just use prediction.
 		{
 			copy_image_data_4x4(&img_enc[currMB->pix_y + block_y], &mb_pred[block_y], currMB->pix_x + block_x, block_x);
+			currMB->vqIndex[0][block_y/4][block_x/4] = -1;
 		}
 	}
 	else
 	{
 		currSlice->cofAC[b8][b4][0][0] = 0;
+		currMB->vqIndex[0][block_y/4][block_x/4] = -1;
 		copy_image_data_4x4(&img_enc[currMB->pix_y + block_y], &mb_pred[block_y], currMB->pix_x + block_x, block_x);
 	}
 

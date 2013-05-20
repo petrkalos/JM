@@ -193,7 +193,7 @@ void write_vq(Macroblock *currMB){
 
 	fp = fopen("vqindex.bin","ab");
 	check_file(fp);
-	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
+	fwrite(&currMB->best_mode,sizeof(int),1,fp);
 
 
 	pl=0;

@@ -10,7 +10,7 @@
 
 #include "fastnn.h"
 
-#define FASTNN
+//#define FASTNN
 
 #ifdef FASTNN
 	struct node *root[3][2];
@@ -175,11 +175,13 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 		uv = pl;
 	}
 
-	if(vqindex[addr*25]==addr){
+	if(currMB->mb_type==vqindex[addr*25]){
 		for (i = 0; i < height/(pl+1); i+=dims){
 			for(j = 0; j< width/(pl+1); j+=dims){
-				if(vqindex[addr*25+pos[uv]]!=-1){
-					int idx,idx2,t;
+				int t;
+				t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
+				if(vqindex[addr*25+t]!=-1){
+					int idx,idx2;
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
 							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
@@ -192,7 +194,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 					else if(is_p(currMB) && currMB->b8pdir[mb_y/4+mb_x/8+(int)subb]==BI_PRED) mode = 1;
 					else mode = 2;
 
-					t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
+					
 
 					idx = vqindex[addr*25+t]*dim;
 					dist = sqrt(distance2_sse2(&cb[mode][pl][idx],temp,16))/dim;
@@ -204,6 +206,8 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);
 						}
 					}
+				}else{
+					printf("no vq for block %d\n",currMB->mbAddrX);
 				}
 			}
 		}
