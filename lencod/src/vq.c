@@ -134,7 +134,7 @@ void init_codebooks(VideoParameters *vp){
 	}
 
 #ifdef FASTNN
-	for(mode=0;mode<1;mode++){
+	for(mode=0;mode<3;mode++){
 		for(pl=0;pl<2;pl++){
 			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
 		}
@@ -162,7 +162,7 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 			}
 
 			if(is_intra(currMB)) mode = 0;
-			else if(is_p(currMB) && currMB->b8x8[(int)subb].pdir==BI_PRED) mode = 1;
+			else if(is_p(currMB) && currMB->b8x8[mb_y/4+mb_x/8+(int)subb].pdir==BI_PRED) mode = 1;
 			else mode = 2;
 
 #ifdef FASTNN

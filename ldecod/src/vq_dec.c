@@ -55,6 +55,16 @@ float distance2_sse2(float *vector1, float *vector2, int dim)
 	return sum;
 }
 
+static inline int is_intra(Macroblock *curr_MB)
+{
+	return ((curr_MB)->mb_type==SI4MB || (curr_MB)->mb_type==I4MB || (curr_MB)->mb_type==I16MB || (curr_MB)->mb_type==I8MB || (curr_MB)->mb_type==IPCM);
+}
+
+static inline int is_p(Macroblock *curr_MB){
+	if((curr_MB)->mb_type==0 || (curr_MB)->mb_type==1 || (curr_MB)->mb_type==2 || (curr_MB)->mb_type==3 || (curr_MB)->mb_type==8) return 1;
+	return 0;
+}
+
 void check_file(FILE *fp){
 	if(fp==NULL){
 		printf("Error opening file\n");
@@ -74,7 +84,7 @@ int reverse_shift(int x){
 void init_codebooks(VideoParameters *vp){
 	int i,pl,size,mode;
 	InputParameters *Inp;
-	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP,*fpIndex;
+	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP;
 
 	Inp = vp->p_Inp;
 
@@ -123,26 +133,37 @@ void init_codebooks(VideoParameters *vp){
 	}
 
 #ifdef FASTNN
-	for(mode=0;mode<1;mode++){
+	for(mode=0;mode<3;mode++){
 		for(pl=0;pl<2;pl++){
 			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
 		}
 	}
 #endif
 
-	vqindex = (int *)malloc(sizeof(int *)*1350*21);
+	size = 1350*25;
+	vqindex = (int *)malloc(sizeof(int *)*size);
+}
+
+
+void read_vqindices(int frame){
+	int size;
+	FILE *fpIndex;
+	
+	size = 1350*25;
+	
 	fpIndex = fopen("vqindex.bin","rb");
 	check_file(fpIndex);
-	fread(vqindex,sizeof(int),1350*25,fpIndex);
+	
+	fseek(fpIndex,size*frame*sizeof(int),SEEK_SET);
+	fread(vqindex,sizeof(int),size,fpIndex);
 
 	fclose(fpIndex);
-
 }
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	static const int pos[3] = {1,17,21};
 	int i,j,vi,vj,uv,mode=0;
-	float dist,dist2;
+	float dist,subb=0.0;
 	int addr;
 	
 	addr = currMB->mbAddrX;
@@ -164,6 +185,12 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
 						}
 					}
+
+
+					
+					if(is_intra(currMB)) mode = 0;
+					else if(is_p(currMB) && currMB->b8pdir[mb_y/4+mb_x/8+(int)subb]==BI_PRED) mode = 1;
+					else mode = 2;
 
 					t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
 

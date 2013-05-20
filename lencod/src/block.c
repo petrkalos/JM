@@ -1179,7 +1179,7 @@ int residual_transform_quant_chroma_4x4(Macroblock *currMB, int uv, int cr_cbp)
 	//  Decoded block moved to memory
 	if (nonezero == TRUE)
 	{
-		sample_reconstruct2 (&p_Vid->enc_picture->imgUV[uv][currMB->pix_c_y], mb_pred, mb_rres,0,0, currMB->pix_c_x, p_Vid->mb_cr_size_x, p_Vid->mb_cr_size_y, max_imgpel_value_uv, DQ_BITS,uv+1,currMB);
+		sample_reconstruct2(&p_Vid->enc_picture->imgUV[uv][currMB->pix_c_y], mb_pred, mb_rres,0,0, currMB->pix_c_x, p_Vid->mb_cr_size_x, p_Vid->mb_cr_size_y, max_imgpel_value_uv, DQ_BITS,uv+1,currMB);
 	}
 	else
 	{

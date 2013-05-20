@@ -2077,8 +2077,14 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 	*/
 	
 	for(i=0;i<4;i++){
-		if(currMB->mb_type == I4MB) memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex4x4[i],4*sizeof(int));
-		else memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
+		if(currMB->best_mode == I4MB){
+			memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex4x4[i],4*sizeof(int));
+		}else if(currMB->best_mode == P8x8){
+			memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex8x8[i],4*sizeof(int));
+		}else{
+			memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
+		}
+
 		if(i<2){
 			memcpy(p_RDO->vqIndex[1][i],currMB->vqIndex[1][i],2*sizeof(int));
 			memcpy(p_RDO->vqIndex[2][i],currMB->vqIndex[2][i],2*sizeof(int));

@@ -245,6 +245,7 @@ int main(int argc, char **argv)
 	//decoding;
 	do
 	{
+		read_vqindices(iFramesDecoded);
 		iRet = DecodeOneFrame(&pDecPicList);
 		if(iRet==DEC_EOS || iRet==DEC_SUCCEED)
 		{

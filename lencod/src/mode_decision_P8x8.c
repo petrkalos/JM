@@ -163,6 +163,18 @@ void submacroblock_mode_decision_p_slice(Macroblock *currMB,
 			//--- set variables if best mode has changed ---
 			if (rdcost < min_rdcost)
 			{
+				{
+					int byy,bxx,block_y,block_x;
+					int    mb_y       = (block >> 1) << 3;
+					int    mb_x       = (block & 0x01) << 3;
+
+					for (byy=0, block_y=mb_y; block_y<mb_y+8; byy+=4, block_y+=4){
+						for (bxx=0, block_x=mb_x; block_x<mb_x+8; bxx+=4, block_x+=4){
+							currMB->p_Slice->p_RDO->vqIndex8x8[block_y/4][block_x/4] = currMB->vqIndex[0][block_y/4][block_x/4];
+						}
+					}
+				}
+
 				min_cost8x8              = *cost;
 				min_rdcost               = rdcost;
 				*partition               = best;

@@ -37,6 +37,7 @@ struct rdo_structure
 {
 	int vqIndex[3][4][4];
 	int vqIndex4x4[4][4];
+	int vqIndex8x8[4][4];
 	int rec_res[3][16][16];
 
 	RD_8x8DATA *tr4x4;

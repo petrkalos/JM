@@ -26,6 +26,8 @@
 ***********************************************************************
 */
 
+#include "vq_dec.h"
+
 #include "contributors.h"
 
 #include <math.h>
@@ -815,6 +817,8 @@ int decode_one_frame(DecoderParams *pDecoder)
 	Slice **ppSliceList = p_Vid->ppSliceList;
 	int iSliceNo;
 
+
+	//read_vqindices(
 	//read one picture first;
 	p_Vid->iSliceNumOfCurrPic=0;
 	current_header=0;
