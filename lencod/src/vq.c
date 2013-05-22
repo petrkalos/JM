@@ -143,9 +143,8 @@ void init_codebooks(VideoParameters *vp){
 }
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
-	int i,j,vi,vj,min,uv=0;
+	int i,j,vi,vj,min,uv=0,idx8x8;
 	int mode;
-	float subb=0.0;
 
 	if(pl != 0){
 		uv = pl;
@@ -154,15 +153,16 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 	
 	for (i = 0; i < height; i+=dims){
 		for(j = 0; j< width; j+=dims){
-
 			for(vi=0;vi<dims;vi++){
 				for(vj=0;vj<dims;vj++){
 					temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
 				}
 			}
 
+			idx8x8 = (mb_y/8+i/8)*2/(pl+1)+(mb_x/8+j/8);
+
 			if(is_intra(currMB)) mode = 0;
-			else if(is_p(currMB) && currMB->b8x8[mb_y/4+mb_x/8+(int)subb].pdir==BI_PRED) mode = 1;
+			else if(is_p(currMB) && currMB->b8x8[idx8x8].pdir==BI_PRED) mode = 1;
 			else mode = 2;
 
 #ifdef FASTNN
@@ -177,36 +177,24 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 				}
 			}
 
-			currMB->vqIndex[uv][mb_y/dims+i/dims][mb_x/dims+j/dims] = min;
-			
-			subb+=0.5;
+			currMB->vqIndex[uv][(mb_y/dims+i/dims)*4/(pl+1)+mb_x/dims+j/dims] = min;
 		}
 	}
 }
 
 void write_vq(Macroblock *currMB){
 	FILE *fp;
-	int i,pl;
 	struct rdo_structure    *p_RDO;
 
 	p_RDO = currMB->p_Slice->p_RDO;
 
 	fp = fopen("vqindex.bin","ab");
 	check_file(fp);
-	fwrite(&currMB->best_mode,sizeof(int),1,fp);
+	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
 
-
-	pl=0;
-	for(i=0;i<4;i++){
-		fwrite(&p_RDO->vqIndex[pl][i],sizeof(int),4,fp);
-	}
-
-	pl++;
-	for(;pl<3;pl++){
-		for(i=0;i<2;i++){
-			fwrite(&p_RDO->vqIndex[pl][i],sizeof(int),2,fp);
-		}
-	}
+	fwrite(p_RDO->vqIndex[0],sizeof(int),16,fp);
+	fwrite(p_RDO->vqIndex[1],sizeof(int),4,fp);
+	fwrite(p_RDO->vqIndex[2],sizeof(int),4,fp);
 	
 	fclose(fp);
 }

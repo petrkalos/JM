@@ -116,7 +116,6 @@ int mode_decision_for_I4x4_blocks_JM_High (Macroblock *currMB, int  b8,  int  b4
 	//===== LOOP OVER ALL 4x4 INTRA PREDICTION MODES =====
 	for (ipmode = 0; ipmode < NO_INTRA_PMODE; ipmode++)
 	{
-		int i;
 		available_mode =  (all_available) || (ipmode==DC_PRED) ||
 			(up_available && (ipmode==VERT_PRED||ipmode==VERT_LEFT_PRED||ipmode==DIAG_DOWN_LEFT_PRED)) ||
 			(left_available && (ipmode==HOR_PRED||ipmode==HOR_UP_PRED));
@@ -140,7 +139,7 @@ int mode_decision_for_I4x4_blocks_JM_High (Macroblock *currMB, int  b8,  int  b4
 			rdcost = currSlice->rdcost_for_4x4_intra_blocks (currMB, &c_nz, b8, b4, ipmode, lambda, mostProbableMode, min_rdcost);
 			if ((rdcost < min_rdcost) || (rdcost == min_rdcost && ipmode == mostProbableMode))
 			{
-				p_RDO->vqIndex4x4[block_y4][block_x4] = currMB->vqIndex[0][block_y4][block_x4];
+				p_RDO->vqIndex4x4[block_y4*4+block_x4] = currMB->vqIndex[0][block_y4*4+block_x4];
 
 				//--- set coefficients ---
 				memcpy(p_RDO->cofAC4x4[0], ACLevel, 18 * sizeof(int));

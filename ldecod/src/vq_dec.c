@@ -30,6 +30,21 @@ int *vqindex;
 
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
 
+inline int check_zero(int **mb_ores, int block_x)
+{
+	int i, j, k = 0;
+
+	for (j = 0; (j < BLOCK_SIZE) && (k == 0); ++j)
+	{
+		for (i = block_x; (i< block_x + BLOCK_SIZE) && (k == 0); ++i)
+		{
+			//k |= (mb_ores[j][i] != 0);
+			k |= mb_ores[j][i];
+		}
+	}
+	return k;
+}
+
 float distance2_sse2(float *vector1, float *vector2, int dim)
 {
 	int i;
@@ -144,7 +159,6 @@ void init_codebooks(VideoParameters *vp){
 	vqindex = (int *)malloc(sizeof(int *)*size);
 }
 
-
 void read_vqindices(int frame){
 	int size;
 	FILE *fpIndex;
@@ -162,8 +176,10 @@ void read_vqindices(int frame){
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	static const int pos[3] = {1,17,21};
+	static const int mask[4] = {0x01,0x02,0x04,0x08};
 	int i,j,vi,vj,uv,mode=0;
-	float dist,subb=0.0;
+	int t,idx,idx8x8;
+	float dist;
 	int addr;
 	
 	addr = currMB->mbAddrX;
@@ -174,33 +190,30 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 	}else{
 		uv = pl;
 	}
-
-	if(currMB->mb_type==vqindex[addr*25]){
+	
+	if(currMB->mbAddrX==vqindex[addr*25]){
 		for (i = 0; i < height/(pl+1); i+=dims){
 			for(j = 0; j< width/(pl+1); j+=dims){
-				int t;
 				t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
-				if(vqindex[addr*25+t]!=-1){
-					int idx,idx2;
-					for(vi=0;vi<dims;vi++){
-						for(vj=0;vj<dims;vj++){
-							temp[vi*dims+vj] = (float)(mb_rres[i+vi][mb_x+j+vj]);
-						}
+				
+				idx = vqindex[addr*25+t]*dim;
+
+				for(vi=0;vi<dims;vi++){
+					for(vj=0;vj<dims;vj++){
+						temp[vi*dims+vj] = (float)(mb_rres[mb_y+i+vi][mb_x+j+vj]);
 					}
+				}
 
+				idx8x8 = (mb_y/8+i/8)*2/(pl+1)+(mb_x/8+j/8);
 
+				if(idx!=-dim && (currMB->cbp & mask[idx8x8] | pl)){
 					
 					if(is_intra(currMB)) mode = 0;
-					else if(is_p(currMB) && currMB->b8pdir[mb_y/4+mb_x/8+(int)subb]==BI_PRED) mode = 1;
+					else if(is_p(currMB) && currMB->b8pdir[idx8x8]==BI_PRED) mode = 1;
 					else mode = 2;
 
-					
-
-					idx = vqindex[addr*25+t]*dim;
 					dist = sqrt(distance2_sse2(&cb[mode][pl][idx],temp,16))/dim;
-#ifdef FASTNN
-					idx2 = fastNN(temp,root[mode][pl],cb[mode][pl],dim,min_dist)*dim;
-#endif		
+
 					for(vi=0;vi<dims;vi++){
 						for(vj=0;vj<dims;vj++){
 							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);

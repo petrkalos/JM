@@ -681,6 +681,7 @@ void iMBtrans4x4(Macroblock *currMB, ColorPlane pl, int smb)
 				inverse4x4(cof, mb_rres, jj, 12);
 			}
 		}
+
 		sample_reconstruct2 (currSlice->mb_rec[pl], currSlice->mb_pred[pl], mb_rres,0, 0, 0, MB_BLOCK_SIZE, MB_BLOCK_SIZE, currMB->p_Vid->max_pel_value_comp[pl], DQ_BITS,pl,currMB);
 	}
 

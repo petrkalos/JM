@@ -2076,21 +2076,19 @@ void store_macroblock_parameters (Macroblock *currMB, int mode)
 
 	*/
 	
-	for(i=0;i<4;i++){
-		if(currMB->best_mode == I4MB){
-			memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex4x4[i],4*sizeof(int));
-		}else if(currMB->best_mode == P8x8){
-			memcpy(p_RDO->vqIndex[0][i],p_RDO->vqIndex8x8[i],4*sizeof(int));
-		}else{
-			memcpy(p_RDO->vqIndex[0][i],currMB->vqIndex[0][i],4*sizeof(int));
-		}
 
-		if(i<2){
-			memcpy(p_RDO->vqIndex[1][i],currMB->vqIndex[1][i],2*sizeof(int));
-			memcpy(p_RDO->vqIndex[2][i],currMB->vqIndex[2][i],2*sizeof(int));
-		}
+	if(currMB->best_mode == I4MB){
+		memcpy(p_RDO->vqIndex[0],p_RDO->vqIndex4x4,16*sizeof(int));
+	}else if(currMB->best_mode == P8x8){
+		memcpy(p_RDO->vqIndex[0],p_RDO->vqIndex8x8,16*sizeof(int));
+	}else{
+		memcpy(p_RDO->vqIndex[0],currMB->vqIndex[0],16*sizeof(int));
 	}
 
+	memcpy(p_RDO->vqIndex[1],currMB->vqIndex[1],4*sizeof(int));
+	memcpy(p_RDO->vqIndex[2],currMB->vqIndex[2],4*sizeof(int));
+	
+	
 	if((currSlice->slice_type == SP_SLICE) && p_Vid->sp2_frame_indicator==0)
 	{
 		for (j = 0; j < MB_BLOCK_SIZE; j++)

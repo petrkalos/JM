@@ -351,7 +351,7 @@ typedef struct wp_params
 //! Macroblock
 typedef struct macroblock_enc
 {
-	int			   vqIndex[3][4][4];
+	int			   vqIndex[3][16];
 	struct slice       *p_Slice;                    //!< pointer to the current slice
 	struct video_par   *p_Vid;                      //!< pointer to VideoParameters
 	InputParameters    *p_Inp;
@@ -942,7 +942,6 @@ typedef struct coding_par
 //! VideoParameters
 typedef struct video_par
 {
-	int	   ***	vqIndex;
 	InputParameters          *p_Inp;
 	pic_parameter_set_rbsp_t *active_pps;
 	seq_parameter_set_rbsp_t *active_sps;
