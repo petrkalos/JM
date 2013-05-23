@@ -9,7 +9,7 @@
 
 bin/*
 !*bin/yuv/
-
+*bin/yuv/horses*
 
 
 # User-specific files
