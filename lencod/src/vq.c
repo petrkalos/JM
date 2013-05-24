@@ -190,8 +190,7 @@ void write_vq(Macroblock *currMB){
 
 	fp = fopen("vqindex.bin","ab");
 	check_file(fp);
-	fwrite(&currMB->mbAddrX,sizeof(int),1,fp);
-
+	
 	fwrite(p_RDO->vqIndex[0],sizeof(int),16,fp);
 	fwrite(p_RDO->vqIndex[1],sizeof(int),4,fp);
 	fwrite(p_RDO->vqIndex[2],sizeof(int),4,fp);

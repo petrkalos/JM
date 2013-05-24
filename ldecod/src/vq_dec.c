@@ -21,10 +21,11 @@ int vqlen;
 
 int *vqindex = NULL;
 
-const int pos[3] = {1,17,21};
+#define IND_SIZE 24
+const int pos[3] = {0,16,20};
 const int mask[4] = {0x01,0x02,0x04,0x08};
 
-#define IND_SIZE 25
+
 
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
 
@@ -77,20 +78,6 @@ void check_file(FILE *fp){
 
 int reverse_shift(int x){
 	return 64*x-32;
-}
-
-void read_vqindices(int frame){
-	FILE *fpIndex;
-	
-	if(vqindex==NULL) return;
-
-	fpIndex = fopen("vqindex.bin","rb");
-	check_file(fpIndex);
-	
-	fseek(fpIndex,vqlen*frame*sizeof(int),SEEK_SET);
-	fread(vqindex,sizeof(int),vqlen,fpIndex);
-
-	fclose(fpIndex);
 }
 
 void init_codebooks(VideoParameters *vp){
@@ -153,7 +140,19 @@ void init_codebooks(VideoParameters *vp){
 	read_vqindices(0);
 }
 
+void read_vqindices(int frame){
+	FILE *fpIndex;
+	
+	if(vqindex==NULL) return;
 
+	fpIndex = fopen("vqindex.bin","rb");
+	check_file(fpIndex);
+	
+	fseek(fpIndex,vqlen*frame*sizeof(int),SEEK_SET);
+	fread(vqindex,sizeof(int),vqlen,fpIndex);
+
+	fclose(fpIndex);
+}
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	int i,j,vi,vj,uv,mode=0;
