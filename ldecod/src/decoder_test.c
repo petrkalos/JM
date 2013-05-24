@@ -240,12 +240,9 @@ int main(int argc, char **argv)
 		return -1; //failed;
 	}
 
-	init_codebooks(p_Dec->p_Vid);
-
 	//decoding;
 	do
 	{
-		read_vqindices(iFramesDecoded);
 		iRet = DecodeOneFrame(&pDecPicList);
 		if(iRet==DEC_EOS || iRet==DEC_SUCCEED)
 		{

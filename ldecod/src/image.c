@@ -816,9 +816,9 @@ int decode_one_frame(DecoderParams *pDecoder)
 	Slice *currSlice; // = p_Vid->currentSlice;
 	Slice **ppSliceList = p_Vid->ppSliceList;
 	int iSliceNo;
+	static int iFramesDecoded=0;
+	read_vqindices(iFramesDecoded++);
 
-
-	//read_vqindices(
 	//read one picture first;
 	p_Vid->iSliceNumOfCurrPic=0;
 	current_header=0;
@@ -851,6 +851,7 @@ int decode_one_frame(DecoderParams *pDecoder)
 	}
 	while(current_header != SOP && current_header !=EOS)
 	{
+		
 		//no pending slices;
 		assert(p_Vid->iSliceNumOfCurrPic < p_Vid->iNumOfSlicesAllocated);
 		if(!ppSliceList[p_Vid->iSliceNumOfCurrPic])
@@ -871,6 +872,8 @@ int decode_one_frame(DecoderParams *pDecoder)
 		currSlice->is_reset_coeff_cr = FALSE;
 
 		current_header = read_new_slice(currSlice);
+
+		
 		//init;
 		currSlice->current_header = current_header;
 
@@ -1505,6 +1508,9 @@ process_nalu:
 			// the rest of the slice header
 			BitsUsedByHeader = FirstPartOfSliceHeader(currSlice);
 			UseParameterSet (currSlice);
+			
+			init_codebooks(p_Dec->p_Vid);
+
 			currSlice->active_sps = p_Vid->active_sps;
 			currSlice->active_pps = p_Vid->active_pps;
 			currSlice->Transform8x8Mode = p_Vid->active_pps->transform_8x8_mode_flag;

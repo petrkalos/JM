@@ -8,42 +8,25 @@
 #include "mbuffer.h"
 #include "memalloc.h"
 
-#include "fastnn.h"
-
-//#define FASTNN
-
-#ifdef FASTNN
-	struct node *root[3][2];
-	struct context *stor[3][2];
-	float min_dist[2];
-#endif
+#include "vq_dec.h"
 
 float **cb[3];
 
-float *temp;
+float *temp = NULL;
 
 int dim;
 int dims;
 int cblen;
+int vqlen;
 
-int *vqindex;
+int *vqindex = NULL;
+
+const int pos[3] = {1,17,21};
+const int mask[4] = {0x01,0x02,0x04,0x08};
+
+#define IND_SIZE 25
 
 #define round(r) (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5)
-
-inline int check_zero(int **mb_ores, int block_x)
-{
-	int i, j, k = 0;
-
-	for (j = 0; (j < BLOCK_SIZE) && (k == 0); ++j)
-	{
-		for (i = block_x; (i< block_x + BLOCK_SIZE) && (k == 0); ++i)
-		{
-			//k |= (mb_ores[j][i] != 0);
-			k |= mb_ores[j][i];
-		}
-	}
-	return k;
-}
 
 float distance2_sse2(float *vector1, float *vector2, int dim)
 {
@@ -96,10 +79,26 @@ int reverse_shift(int x){
 	return 64*x-32;
 }
 
+void read_vqindices(int frame){
+	FILE *fpIndex;
+	
+	if(vqindex==NULL) return;
+
+	fpIndex = fopen("vqindex.bin","rb");
+	check_file(fpIndex);
+	
+	fseek(fpIndex,vqlen*frame*sizeof(int),SEEK_SET);
+	fread(vqindex,sizeof(int),vqlen,fpIndex);
+
+	fclose(fpIndex);
+}
+
 void init_codebooks(VideoParameters *vp){
 	int i,pl,size,mode;
 	InputParameters *Inp;
 	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP;
+
+	if(temp!=NULL) return;
 
 	Inp = vp->p_Inp;
 
@@ -107,6 +106,7 @@ void init_codebooks(VideoParameters *vp){
 	dim = Inp->dim;
 	dims = (int)sqrt((double)dim);
 	size = cblen*dim;
+
 
 	temp = (float *)_aligned_malloc(sizeof(float)*dim,16);
 
@@ -147,39 +147,17 @@ void init_codebooks(VideoParameters *vp){
 		}
 	}
 
-#ifdef FASTNN
-	for(mode=0;mode<3;mode++){
-		for(pl=0;pl<2;pl++){
-			initNN(&root[mode][pl],&stor[mode][pl],dim,cblen,cb[mode][pl]);
-		}
-	}
-#endif
+	vqlen = IND_SIZE*vp->FrameSizeInMbs;
+	vqindex = (int *)malloc(sizeof(int)*vqlen);
 
-	size = 1350*25;
-	vqindex = (int *)malloc(sizeof(int *)*size);
+	read_vqindices(0);
 }
 
-void read_vqindices(int frame){
-	int size;
-	FILE *fpIndex;
-	
-	size = 1350*25;
-	
-	fpIndex = fopen("vqindex.bin","rb");
-	check_file(fpIndex);
-	
-	fseek(fpIndex,size*frame*sizeof(int),SEEK_SET);
-	fread(vqindex,sizeof(int),size,fpIndex);
 
-	fclose(fpIndex);
-}
 
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
-	static const int pos[3] = {1,17,21};
-	static const int mask[4] = {0x01,0x02,0x04,0x08};
 	int i,j,vi,vj,uv,mode=0;
 	int t,idx,idx8x8;
-	float dist;
 	int addr;
 	
 	addr = currMB->mbAddrX;
@@ -191,39 +169,26 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 		uv = pl;
 	}
 	
-	if(currMB->mbAddrX==vqindex[addr*25]){
-		for (i = 0; i < height/(pl+1); i+=dims){
-			for(j = 0; j< width/(pl+1); j+=dims){
-				t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
-				
-				idx = vqindex[addr*25+t]*dim;
+	for (i = 0; i < height/(pl+1); i+=dims){
+		for(j = 0; j< width/(pl+1); j+=dims){
+
+			t = pos[uv]+(mb_y/dims+i/dims)*4/(pl+1)+(mb_x/dims+j/dims);
+			idx = vqindex[addr*IND_SIZE+t]*dim;
+			idx8x8 = (mb_y/8+i/8)*2/(pl+1)+(mb_x/8+j/8);
+
+			if(idx!=-dim && (currMB->cbp & mask[idx8x8] | pl)){
+					
+				if(is_intra(currMB)) mode = 0;
+				else if(is_p(currMB) && currMB->b8pdir[idx8x8]==BI_PRED) mode = 1;
+				else mode = 2;
 
 				for(vi=0;vi<dims;vi++){
 					for(vj=0;vj<dims;vj++){
-						temp[vi*dims+vj] = (float)(mb_rres[mb_y+i+vi][mb_x+j+vj]);
+						mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);
 					}
 				}
 
-				idx8x8 = (mb_y/8+i/8)*2/(pl+1)+(mb_x/8+j/8);
-
-				if(idx!=-dim && (currMB->cbp & mask[idx8x8] | pl)){
-					
-					if(is_intra(currMB)) mode = 0;
-					else if(is_p(currMB) && currMB->b8pdir[idx8x8]==BI_PRED) mode = 1;
-					else mode = 2;
-
-					dist = sqrt(distance2_sse2(&cb[mode][pl][idx],temp,16))/dim;
-
-					for(vi=0;vi<dims;vi++){
-						for(vj=0;vj<dims;vj++){
-							mb_rres[i+vi][mb_x+j+vj] = (cb[mode][pl][idx+vi*dims+vj]);
-						}
-					}
-				}
 			}
 		}
-		
-	}else{
-		printf("Indices sync failed\n");
 	}
 }
