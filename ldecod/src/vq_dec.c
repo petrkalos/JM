@@ -85,9 +85,11 @@ void init_codebooks(VideoParameters *vp){
 	InputParameters *Inp;
 	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP;
 
-	if(temp!=NULL) return;
+	
 
 	Inp = vp->p_Inp;
+
+	if(temp!=NULL || Inp->dim==0) return;
 
 	cblen = Inp->cblen;
 	dim = Inp->dim;
@@ -159,6 +161,8 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 	int t,idx,idx8x8;
 	int addr;
 	
+	if(dim==0) return;
+
 	addr = currMB->mbAddrX;
 
 	if(pl==2){

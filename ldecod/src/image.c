@@ -2541,10 +2541,6 @@ void decode_one_slice(Slice *currSlice)
 
 	//reset_ec_flags(p_Vid);
 
-	if(!(p_Vid->p_Inp->keep_i || p_Vid->p_Inp->keep_p || p_Vid->p_Inp->keep_b)){
-		goto l1;
-		flag = 0;
-	}
 	fp_y = fopen(p_Vid->p_Inp->resfiley,"ab");
 	fp_uv = fopen(p_Vid->p_Inp->resfileuv,"ab");
 
@@ -2702,7 +2698,7 @@ void decode_one_slice(Slice *currSlice)
 	}
 
 	cnt = 0;
-	if(p_Vid->p_Inp->keep_i || p_Vid->p_Inp->keep_p || p_Vid->p_Inp->keep_b){
+	if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b && dims==0){
 		int y;
 		for(y=0;y<480;y++){
 			fwrite(buff[0][y],sizeof(short),720,fp_y);
