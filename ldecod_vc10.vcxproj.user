@@ -13,12 +13,12 @@
     <LocalDebuggerWorkingDirectory>$(ProjectDir)\bin</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-d my_cfgs\decoder_test.cfg</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-d my_cfgs\decoder_i.cfg</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)\bin</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-d my_cfgs\decoder_test.cfg</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-d my_cfgs\decoder_i.cfg</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)\bin</LocalDebuggerWorkingDirectory>

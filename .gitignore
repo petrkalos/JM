@@ -8,8 +8,7 @@
 */Release*
 
 bin/*
-!*bin/yuv/
-*bin/yuv/horses*
+*bin/yuv/
 
 
 # User-specific files
