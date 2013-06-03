@@ -2541,6 +2541,8 @@ void decode_one_slice(Slice *currSlice)
 
 	//reset_ec_flags(p_Vid);
 
+	if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b && dims==0) goto l1;
+
 	fp_y = fopen(p_Vid->p_Inp->resfiley,"ab");
 	fp_uv = fopen(p_Vid->p_Inp->resfileuv,"ab");
 

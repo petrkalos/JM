@@ -42,7 +42,7 @@ Mapping Map[] = {
 	{"FileFormat",               &cfgparams.FileFormat,                   0,   0.0,                       1,  0.0,              1.0,                             },
 	{"RefOffset",                &cfgparams.ref_offset,                   0,   0.0,                       1,  0.0,              256.0,                             },
 	{"POCScale",                 &cfgparams.poc_scale,                    0,   2.0,                       1,  1.0,              10.0,                            },
-	{"ResidualsDims",            &cfgparams.resdims,					  0,   1.0,                       1,  1.0,              8.0,                            },
+	{"ResidualsDims",            &cfgparams.resdims,					  0,   1.0,                       1,  0.0,              8.0,                            },
 	{"ResidualsFileY",           &cfgparams.resfiley,                     1,   0.0,                       0,  0.0,              0.0,             FILE_NAME_SIZE, },
 	{"ResidualsFileUV",          &cfgparams.resfileuv,                    1,   0.0,                       0,  0.0,              0.0,             FILE_NAME_SIZE, },
 	{"KeepI",			         &cfgparams.keep_i,						  0,   1.0,                       1,  0.0,              1.0,                             },
