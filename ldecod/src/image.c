@@ -2511,7 +2511,6 @@ void decode_one_slice(Slice *currSlice)
 	static int flag = 1;
 	static long long total_cnt=0;
 	FILE *fp_y,*fp_uv;
-	int cnt = 0;
 	int dims = currSlice->p_Vid->p_Inp->resdims;
 	static short buff[3][480][720];
 
@@ -2541,7 +2540,7 @@ void decode_one_slice(Slice *currSlice)
 
 	//reset_ec_flags(p_Vid);
 
-	if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b && dims==0) goto l1;
+	if(p_Vid->p_Inp->resmode==0) goto l1;
 
 	fp_y = fopen(p_Vid->p_Inp->resfiley,"ab");
 	fp_uv = fopen(p_Vid->p_Inp->resfileuv,"ab");
@@ -2568,6 +2567,14 @@ void decode_one_slice(Slice *currSlice)
 		flag=0;
 	}
 
+	if(p_Vid->p_Inp->resmode==1){
+		short frame_type;
+		if(currSlice->slice_type==2) frame_type = 0;
+		else frame_type = 1;
+
+		fwrite(&frame_type,sizeof(short),1,fp_uv);
+	}
+
 	l1:
 	while (end_of_slice == FALSE) // loop over macroblocks
 	{
@@ -2583,9 +2590,8 @@ void decode_one_slice(Slice *currSlice)
 		currSlice->read_one_macroblock(currMB);
 		decode_one_macroblock(currMB, currSlice->dec_picture);
 
-		if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b){
+		if(p_Vid->p_Inp->resmode==1){
 			int y,x;
-
 			for(y=0;y<MB_BLOCK_SIZE;y++){
 				for(x=0;x<MB_BLOCK_SIZE;x++){
 					buff[0][currMB->pix_y+y][currMB->pix_x+x] = (short)currSlice->mb_rres[0][y][x];
@@ -2593,99 +2599,63 @@ void decode_one_slice(Slice *currSlice)
 			}
 			for(y=0;y<MB_BLOCK_SIZE/2;y++){
 				for(x=0;x<MB_BLOCK_SIZE/2;x++){
-					buff[1][currMB->pix_y+y][currMB->pix_x+x] = (short)currSlice->mb_rres[0][y][x];
+					buff[1][currMB->pix_c_y+y][currMB->pix_c_x+x] = (short)currSlice->mb_rres[1][y][x];
 				}
 			}
+			
 			for(y=0;y<MB_BLOCK_SIZE/2;y++){
 				for(x=0;x<MB_BLOCK_SIZE/2;x++){
-					buff[2][currMB->pix_y+y][currMB->pix_x+x] = (short)currSlice->mb_rres[0][y][x];
+					buff[2][currMB->pix_c_y+y][currMB->pix_c_x+x] = (short)currSlice->mb_rres[2][y][x];
 				}
 			}
-
+			
+			fwrite(&(currMB->mb_type),sizeof(short),1,fp_uv);
+			
+		}else if(p_Vid->p_Inp->resmode==2){
 			//Keep only I frames
-		}else if(p_Vid->p_Inp->keep_i && is_intra_mb(currMB->mb_type)){
-			int y,x;
-			for(x=0;x<MB_BLOCK_SIZE;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE;y++){
-					write_short(fp_y,&currSlice->mb_rres[0][currMB->pix_y+y][x],dims);
-				}
-			}
-
-			for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE/2;y++){
-					write_short(fp_uv,&currSlice->mb_rres[1][y][x],dims);
-				}
-			}
-
-			for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE/2;y++){
-					write_short(fp_uv,&currSlice->mb_rres[2][y][x],dims);
-				}
-			}
-
-			cnt += MB_BLOCK_SIZE*MB_BLOCK_SIZE/dim+MB_BLOCK_SIZE*MB_BLOCK_SIZE/(dim*2);
-		}else if(p_Vid->p_Inp->keep_p && !is_intra_mb(currMB->mb_type)){
-			int y,x;
-
-			for(x=0;x<MB_BLOCK_SIZE;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE;y++){
-					write_short(fp_y,&currSlice->mb_rres[0][y][x],dims);
-				}
-			}
-
-			for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE/2;y++){
-					write_short(fp_uv,&currSlice->mb_rres[1][y][x],dims);
-				}
-			}
-
-			for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				for(y=0;y<MB_BLOCK_SIZE/2;y++){
-					write_short(fp_uv,&currSlice->mb_rres[2][y][x],dims);
-				}
-			}
-
-			cnt += MB_BLOCK_SIZE*MB_BLOCK_SIZE/dim+MB_BLOCK_SIZE*MB_BLOCK_SIZE/(dim*2);
-		}else if(p_Vid->p_Inp->keep_b){
-			int y,x,i,j;
-			const int dimY  =  8;
-			const int dimUV =  4;
-
-			for(i=x=0;x<MB_BLOCK_SIZE;x+=dims){
-				if(x % dimY == 0 && x!=0) i++;
-				for(j=y=0;y<MB_BLOCK_SIZE;y++){
-					if(currMB->b8pdir[j*2+i]==BI_PRED && is_p_mb(currMB->mb_type)){
+			if(p_Vid->p_Inp->keep_i && is_intra_mb(currMB->mb_type)){
+				int y,x;
+				for(x=0;x<MB_BLOCK_SIZE;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE;y++){
 						write_short(fp_y,&currSlice->mb_rres[0][y][x],dims);
-						cnt++;
 					}
-					if(y % dimY == 0 && y!=0) j++;
 				}
-			}
 
-			for(i=x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				if(x % dimUV == 0 && x!=0) i++;
-				for(j=y=0;y<MB_BLOCK_SIZE/2;y++){
-					if(currMB->b8pdir[j*2+i]==BI_PRED && is_p_mb(currMB->mb_type)){
+				for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE/2;y++){
 						write_short(fp_uv,&currSlice->mb_rres[1][y][x],dims);
-						cnt++;
 					}
-
-					if(y % dimUV == 0 && y!=0) j++;
 				}
-			}
 
-			for(i=x=0;x<MB_BLOCK_SIZE/2;x+=dims){
-				if(x % dimUV == 0 && x!=0) i++;
-				for(j=y=0;y<MB_BLOCK_SIZE/2;y++){
-					if(currMB->b8pdir[j*2+i]==BI_PRED && is_p_mb(currMB->mb_type)){
+				for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE/2;y++){
 						write_short(fp_uv,&currSlice->mb_rres[2][y][x],dims);
-						cnt++;
 					}
-					if(y % dimUV == 0 && y!=0) j++;
 				}
+
+			}else if(p_Vid->p_Inp->keep_p && !is_intra_mb(currMB->mb_type)){
+				int y,x;
+
+				for(x=0;x<MB_BLOCK_SIZE;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE;y++){
+						write_short(fp_y,&currSlice->mb_rres[0][y][x],dims);
+					}
+				}
+
+				for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE/2;y++){
+						write_short(fp_uv,&currSlice->mb_rres[1][y][x],dims);
+					}
+				}
+
+				for(x=0;x<MB_BLOCK_SIZE/2;x+=dims){
+					for(y=0;y<MB_BLOCK_SIZE/2;y++){
+						write_short(fp_uv,&currSlice->mb_rres[2][y][x],dims);
+					}
+				}
+
 			}
 		}
-
 		if(currSlice->mb_aff_frame_flag && currMB->mb_field)
 		{
 			currSlice->num_ref_idx_active[LIST_0] >>= 1;
@@ -2699,33 +2669,25 @@ void decode_one_slice(Slice *currSlice)
 		end_of_slice = exit_macroblock(currSlice, (!currSlice->mb_aff_frame_flag|| currSlice->current_mb_nr%2));
 	}
 
-	cnt = 0;
-	if(!p_Vid->p_Inp->keep_i && !p_Vid->p_Inp->keep_p && !p_Vid->p_Inp->keep_b && dims==0){
+	if(p_Vid->p_Inp->resmode==1){
 		int y;
 		for(y=0;y<480;y++){
 			fwrite(buff[0][y],sizeof(short),720,fp_y);
-			cnt+=720;
 		}
 
 		for(y=0;y<480/2;y++){
 			fwrite(buff[1][y],sizeof(short),720/2,fp_y);
-			cnt+=720/2;
 		}
 
 		for(y=0;y<480/2;y++){
 			fwrite(buff[2][y],sizeof(short),720/2,fp_y);
-			cnt+=720/2;
 		}
-
+		fclose(fp_uv);
+		fclose(fp_y);
+	}else if(p_Vid->p_Inp->resmode==2){
 		fclose(fp_y);
 		fclose(fp_uv);
-		if(p_Vid->p_Inp->keep_b) cnt /= 4;
-		total_cnt+=cnt;
-		printf("Vectors written %d\n",cnt);
-		printf("Total vectors written %d\n",total_cnt);
 	}
-
-	
 
 	//reset_ec_flags(p_Vid);
 }

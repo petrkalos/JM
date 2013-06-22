@@ -516,9 +516,6 @@
     <ClCompile Include="lencod\src\wp_random.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\my_cfgs\encoder_b.cfg" />
-    <None Include="bin\my_cfgs\encoder_i.cfg" />
-    <None Include="bin\my_cfgs\encoder_p.cfg" />
     <None Include="bin\my_cfgs\encoder_test.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

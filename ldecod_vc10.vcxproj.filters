@@ -442,14 +442,5 @@
     <None Include="bin\my_cfgs\decoder_test.cfg">
       <Filter>my_cfgs</Filter>
     </None>
-    <None Include="bin\my_cfgs\decoder_p.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
-    <None Include="bin\my_cfgs\decoder_i.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
-    <None Include="bin\my_cfgs\decoder_b.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -403,9 +403,6 @@
     <ClCompile Include="ldecod\src\vq_dec.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\my_cfgs\decoder_b.cfg" />
-    <None Include="bin\my_cfgs\decoder_i.cfg" />
-    <None Include="bin\my_cfgs\decoder_p.cfg" />
     <None Include="bin\my_cfgs\decoder_test.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

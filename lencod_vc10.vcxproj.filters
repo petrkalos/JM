@@ -787,15 +787,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\my_cfgs\encoder_i.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
-    <None Include="bin\my_cfgs\encoder_p.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
-    <None Include="bin\my_cfgs\encoder_b.cfg">
-      <Filter>my_cfgs</Filter>
-    </None>
     <None Include="bin\my_cfgs\encoder_test.cfg">
       <Filter>my_cfgs</Filter>
     </None>

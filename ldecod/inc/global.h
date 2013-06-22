@@ -1029,6 +1029,7 @@ typedef struct inp_par
 
 	char resfiley[FILE_NAME_SIZE];
 	char resfileuv[FILE_NAME_SIZE];
+	int resmode;
 	int resdims;
 	int keep_i;
 	int keep_p;

@@ -86,7 +86,11 @@ void init_codebooks(VideoParameters *vp){
 	InputParameters *Inp;
 	FILE *fpYI,*fpYB,*fpYP,*fpUVI,*fpUVB,*fpUVP;
 
+	
+
 	Inp = vp->p_Inp;
+
+	if(Inp->cblen==0 || Inp->dim==0) return;
 
 	cblen = Inp->cblen;
 	dim = Inp->dim;
@@ -145,7 +149,7 @@ void init_codebooks(VideoParameters *vp){
 void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,Macroblock *currMB){
 	int i,j,vi,vj,min,uv=0,idx8x8;
 	int mode;
-
+	if(cblen==0 || dim==0) return;
 	if(pl != 0){
 		uv = pl;
 		pl = 1;
@@ -185,6 +189,8 @@ void quantize_mb(int **mb_rres,int width, int height, int mb_y,int mb_x,int pl,M
 void write_vq(Macroblock *currMB){
 	FILE *fp;
 	struct rdo_structure    *p_RDO;
+
+	if(cblen==0 || dim==0) return;
 
 	p_RDO = currMB->p_Slice->p_RDO;
 
